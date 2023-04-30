@@ -9,7 +9,6 @@ import keyring
 
 LEFT = '\033[D'
 
-print_mutex = Lock()
 num_dots = 0
 initial_prompt = '🧠≫ '
 answer_prompt = '💡≫ '
@@ -36,7 +35,7 @@ def translate_to_command(nl_description, openai_api_key):
     )
     return response.choices[0].text.strip()
 
-def print_wait_dots():
+def print_wait_dots(print_mutex):
     global num_dots
     while(True):
         print_mutex.acquire()
@@ -60,11 +59,13 @@ def print_words_sequentially(text):
 
 def start_wait_prompt():
     print(colored(initial_prompt, 'cyan'), end='')
-    t = Thread(target = print_wait_dots)
+    print_mutex = Lock()
+    t = Thread(target = print_wait_dots, args=(print_mutex,))
     t.daemon = True
     t.start()
+    return print_mutex
 
-def print_answer(command: str):
+def print_answer(command: str, print_mutex):
     print_mutex.acquire()
     characters_to_remove = len(initial_prompt) + num_dots
     print(LEFT * characters_to_remove, end='') 
@@ -78,11 +79,14 @@ def print_answer(command: str):
 def main():
     assert len(sys.argv) > 1
     input_text = ' '.join(sys.argv[1:])
+    print('input text:', input_text)
 
     api_key = load_openai_api_key()
-    start_wait_prompt()
+    print('api key:', api_key)
+    print_mutex = start_wait_prompt()
     command = translate_to_command(input_text, api_key)
-    print_answer(command)
+    print('command:', command)
+    print_answer(command, print_mutex)
 
     char = getch.getch()
     print()
