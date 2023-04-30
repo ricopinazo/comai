@@ -16,9 +16,9 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.x"
-      - name: Install hatchling
+      - name: Install dev tools
         run: |
-          python -m pip install --upgrade hatchling
+          python -m pip install pytest hatchling
       - name: Install comai
         run: |
           python -m pip install .
