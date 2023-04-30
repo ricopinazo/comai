@@ -1,10 +1,7 @@
-#!/Users/pedrorico/.pyenv/versions/comai/bin/python
-
 import openai
 import os
 import sys
 from termcolor import colored
-# from dotenv import load_dotenv
 import getch
 from time import sleep
 from threading import Thread, Lock
