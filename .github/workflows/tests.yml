@@ -19,9 +19,9 @@ jobs:
       - name: Install hatchling
         run: |
           python -m pip install --upgrade hatchling
-      - name: Install dependencies
+      - name: Install comai
         run: |
-          hatchling install
+          python -m pip install .
       - name: Set environment variable using secret
         run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
       - name: Run test suite
