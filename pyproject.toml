@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "comai_ricopinazo"
+version = "0.0.1"
+authors = [
+  { name="Pedro Rico", email="ricopinazo@gmail.com" },
+]
+description = "AI powered console assistant"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "openai",
+  "keyring",
+  "termcolor",
+  "getch",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ricopinazo/comai"
+"Bug Tracker" = "https://github.com/ricopinazo/comai/issues"
+
+[project.scripts]
+comai = "comai_ricopinazo.cli:main"
+
+
+# [tool.setuptools.dynamic]
+# readme = {file = ["README.md"], content-type = "text/markdown"}
+# version = {attr = "mypkg.__version__"}
+
+

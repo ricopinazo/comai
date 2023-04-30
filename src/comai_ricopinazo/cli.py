@@ -3,13 +3,12 @@
 import openai
 import os
 import sys
-# import bcolors
-from colorama import Fore
 from termcolor import colored
-from dotenv import load_dotenv
-from getch import getch
+# from dotenv import load_dotenv
+import getch
 from time import sleep
 from threading import Thread, Lock
+import keyring
 
 LEFT = '\033[D'
 
@@ -18,12 +17,17 @@ num_dots = 0
 initial_prompt = '🧠≫ '
 answer_prompt = '💡≫ '
 
-def translate_to_command(nl_description):
-    load_dotenv()
-    # Authenticate with the OpenAI API
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+def load_openai_api_key():
+    api_key = keyring.get_password("comai", "openai_api_key")
+    if api_key is None:
+        api_key = input("Input OpenAI API key: ")
+        keyring.set_password("comai", "openai_api_key", api_key)
+    return api_key
+
+def translate_to_command(nl_description, openai_api_key): 
+    openai.api_key = openai_api_key
     prompt = (f"Convert the following natural language instruction to a Unix command:\n"
-                f"{input_text}\n"
+                f"{nl_description}\n"
                 f"UNIX command:")
     response = openai.Completion.create(
         engine="text-davinci-002",
@@ -74,14 +78,16 @@ def print_answer(command: str):
     print(colored(answer_prompt, 'green'), end='', flush=True)
     print_words_sequentially(command)
 
-assert len(sys.argv) > 1
-input_text = ' '.join(sys.argv[1:])
+def main():
+    assert len(sys.argv) > 1
+    input_text = ' '.join(sys.argv[1:])
 
-start_wait_prompt()
-command = translate_to_command(input_text)
-print_answer(command)
+    api_key = load_openai_api_key()
+    start_wait_prompt()
+    command = translate_to_command(input_text, api_key)
+    print_answer(command)
 
-char = getch()
-print()
-if char == "\n":
-    os.system(command)
+    char = getch.getch()
+    print()
+    if char == "\n":
+        os.system(command)
