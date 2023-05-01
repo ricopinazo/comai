@@ -17,6 +17,7 @@ def load_openai_api_key():
     api_key = keyring.get_password("comai", "openai_api_key")
     if api_key is None:
         api_key = input("Input OpenAI API key: ")
+        assert len(api_key) > 0
         keyring.set_password("comai", "openai_api_key", api_key)
     return api_key
 
