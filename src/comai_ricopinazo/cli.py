@@ -14,11 +14,16 @@ initial_prompt = '🧠≫ '
 answer_prompt = '💡≫ '
 
 def load_openai_api_key():
-    api_key = keyring.get_password("comai", "openai_api_key")
+    kr = keyring.get_keyring()
+    api_key = None
+    api_key = kr.get_password("comai", "openai_api_key")
+    # except keyring.errors.NoKeyringError:
+    #     kr = CryptFileKeyring()
+
     if api_key is None:
         api_key = input("Input OpenAI API key: ")
         assert len(api_key) > 0
-        keyring.set_password("comai", "openai_api_key", api_key)
+        kr.set_password("comai", "openai_api_key", api_key)
     return api_key
 
 def translate_to_command(nl_description, openai_api_key): 
