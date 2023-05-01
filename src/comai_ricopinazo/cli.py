@@ -79,13 +79,10 @@ def print_answer(command: str, print_mutex):
 def main():
     assert len(sys.argv) > 1
     input_text = ' '.join(sys.argv[1:])
-    print('input text:', input_text)
 
     api_key = load_openai_api_key()
-    print('api key:', api_key)
     print_mutex = start_wait_prompt()
     command = translate_to_command(input_text, api_key)
-    print('command:', command)
     print_answer(command, print_mutex)
 
     char = getch.getch()
