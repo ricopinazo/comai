@@ -29,3 +29,10 @@ repository = "https://github.com/ricopinazo/comai"
 
 [project.scripts]
 comai = "comai_ricopinazo.cli:main"
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+    "hatchling",
+    "python-dotenv"
+]
