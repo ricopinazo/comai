@@ -18,7 +18,7 @@ jobs:
           python-version: "3.x"
       - name: Install python-dbus in ubuntu
         if: matrix.os == 'ubuntu-latest'
-        run: apt-get update; apt-get install python-dbus
+        run: sudo apt-get update; sudo apt-get install python-dbus
       - name: Install dependencies
         run: |
           python -m pip install -e .[test]
