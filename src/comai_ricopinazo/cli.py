@@ -5,7 +5,6 @@ from termcolor import colored
 import getch
 from time import sleep
 from threading import Thread, Lock
-import keyring
 
 from . import config
 
