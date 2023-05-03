@@ -7,6 +7,8 @@ from time import sleep
 from threading import Thread, Lock
 import keyring
 
+from . import config
+
 LEFT = '\033[D'
 
 num_dots = 0
@@ -81,7 +83,12 @@ def main():
     assert len(sys.argv) > 1
     input_text = ' '.join(sys.argv[1:])
 
-    api_key = load_openai_api_key()
+    api_key = config.load_api_key()
+    if not api_key:
+        api_key = input("Input OpenAI API key: ")
+        assert len(api_key) > 0
+        config.save_api_key(api_key)
+
     print_mutex = start_wait_prompt()
     command = translate_to_command(input_text, api_key)
     print_answer(command, print_mutex)

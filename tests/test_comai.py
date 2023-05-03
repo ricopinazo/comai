@@ -1,16 +1,13 @@
 import pytest
 import sys
 import os
-import keyring
 from dotenv import load_dotenv
-from comai_ricopinazo import cli
+from comai_ricopinazo import cli, config
 
 def test_installation_flow(monkeypatch):
     load_dotenv()
-    try:
-        keyring.delete_password("comai", "openai_api_key")
-    except Exception:
-        pass
+    config.delete_api_key()
+   
     monkeypatch.setattr(cli.getch, 'getch', lambda: '\n')
 
     monkeypatch.setattr('builtins.input', lambda _: os.getenv('OPENAI_API_KEY') )
