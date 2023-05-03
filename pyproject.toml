@@ -22,7 +22,6 @@ classifiers = [
 dependencies = [
   "openai",
   "keyring",
-  "dbus-python",
   "termcolor",
   "getch",
 ]
