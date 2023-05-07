@@ -4,14 +4,20 @@ import os
 from dotenv import load_dotenv
 from comai_ricopinazo import cli, config
 
+load_dotenv()
+api_key = os.getenv('OPENAI_API_KEY')
+
 def test_installation_flow(monkeypatch):
-    load_dotenv()
     config.delete_api_key()
    
     monkeypatch.setattr(cli.getch, 'getch', lambda: '\n')
 
-    monkeypatch.setattr('builtins.input', lambda _: os.getenv('OPENAI_API_KEY') )
+    monkeypatch.setattr('builtins.input', lambda _: api_key )
     sys.argv = ['comai', 'show', 'files']
     cli.main()
     monkeypatch.setattr('builtins.input', lambda _: None)
     cli.main()
+
+def test_translation():
+    c1 = cli.translate_to_command("show files", api_key)
+    assert c1 == 'ls'
