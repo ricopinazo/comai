@@ -15,8 +15,8 @@ def save_api_key(api_key):
     encrypted_key = cipher_suite.encrypt(api_key.encode())
     config = configparser.ConfigParser()
     config["DEFAULT"] = {"api_key": encrypted_key.decode()}
-    
-    os.makedirs(config_dir, mode=0o600,  exist_ok=True)
+
+    os.makedirs(config_dir, mode=0o700,  exist_ok=True)
     def opener(path, flags):
         return os.open(path, flags, 0o600)
     with open(config_path, "w", opener=opener) as configfile:
@@ -33,7 +33,7 @@ def load_api_key():
         return None
 
 def delete_api_key():
-    try:
-        os.remove(config_dir)
-    except:
-        pass
+    if os.path.isfile(config_path):
+        os.remove(config_path)
+    if os.path.isdir(config_dir):
+        os.rmdir(config_dir)
