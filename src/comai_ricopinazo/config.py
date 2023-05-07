@@ -6,7 +6,6 @@ from cryptography.fernet import Fernet
 app_name = "comai"
 app_author = "ricopinazo"
 config_dir = appdirs.user_config_dir(app_name, app_author)
-os.makedirs(config_dir, mode=0o600,  exist_ok=True)
 config_path = os.path.join(config_dir, "config.ini")
 
 encryption_key = b'QUMSqTJ5nape3p8joqkgHFCzyJdyQtqzHk6dCuGl9Nw='
@@ -16,7 +15,8 @@ def save_api_key(api_key):
     encrypted_key = cipher_suite.encrypt(api_key.encode())
     config = configparser.ConfigParser()
     config["DEFAULT"] = {"api_key": encrypted_key.decode()}
-
+    
+    os.makedirs(config_dir, mode=0o600,  exist_ok=True)
     def opener(path, flags):
         return os.open(path, flags, 0o600)
     with open(config_path, "w", opener=opener) as configfile:
