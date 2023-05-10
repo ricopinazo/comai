@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "comai_ricopinazo"
-version = "0.0.2"
+dynamic = ["version"]
 authors = [
   { name="Pedro Rico", email="ricopinazo@gmail.com" },
 ]
@@ -39,3 +39,6 @@ test = [
     "hatchling",
     "python-dotenv"
 ]
+
+[tool.hatch.version]
+path = "src/comai_ricopinazo/__init__.py"
