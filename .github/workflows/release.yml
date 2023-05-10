@@ -32,9 +32,9 @@ jobs:
         run: pip install hatch
 
       - name: Bump Version
-        run: hatch version $LEVEL
+        run: hatch version $TYPE
         env:
-          LEVEL: ${{ inputs.logLevel }}
+          TYPE: ${{ inputs.type }}
 
       - name: Print version
         run: hatch version
