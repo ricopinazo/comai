@@ -1,0 +1,63 @@
+name: Release new version
+
+on: 
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Release type'
+        required: true
+        default: 'minor'
+        type: choice
+        options:
+        - major
+        - minor
+        - fix
+        - preview
+        - release
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install hatch
+
+      - name: Bump Version
+        run: hatch version $LEVEL
+        env:
+          LEVEL: ${{ inputs.logLevel }}
+
+      - name: Print version
+        run: hatch version
+
+      # - name: Push Changes
+      #   run: git push origin master
+
+      # - name: Create Git Tag
+      #   run: git tag v$(python setup.py --version)
+
+      # - name: Push Git Tag
+      #   run: git push origin --tags
+
+      # - name: Publish Release
+      #   uses: softprops/action-gh-release@v1
+      #   with:
+      #     files: dist/*
+      #     tag_name: v$(python setup.py --version)
+      #     title: Release v$(python setup.py --version)
+      #     body: |
+      #       Release v$(python setup.py --version)
+
+      # - name: Publish to PyPI
+      #   uses: pypa/gh-action-pypi-publish@release
+      #   with:
+      #     password: ${{ secrets.PYPI_API_TOKEN }}
