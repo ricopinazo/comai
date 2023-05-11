@@ -52,20 +52,19 @@ jobs:
       - name: Print log
         run: git log --oneline -n10
 
-      # - name: Push Changes
-      #   run: git push origin master
+      - name: Push Changes
+        run: |
+          git push origin --all
+          git push origin --tags
 
-      # - name: Push Git Tag
-      #   run: git push origin --tags
-
-      # - name: Publish Release
-      #   uses: softprops/action-gh-release@v1
-      #   with:
-      #     files: dist/*
-      #     tag_name: v$(python setup.py --version)
-      #     title: Release v$(python setup.py --version)
-      #     body: |
-      #       Release v$(python setup.py --version)
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*
+          tag_name: v$(hatch version)
+          title: Release v$(hatch version)
+          body: |
+            Release v$(hatch version) body
 
       # - name: Publish to PyPI
       #   uses: pypa/gh-action-pypi-publish@release
