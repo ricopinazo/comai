@@ -33,13 +33,13 @@ jobs:
 
       - name: setup git
         run: |
-          git config user.name "GitHub Actions Bot"
-          git config user.email "<>"
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
 
       - name: Bump Version
         run: |
           hatch version $TYPE
-          git commit -a -m "Release v$(hatch version)"
+          git commit -am "Release v$(hatch version)"
         env:
           TYPE: ${{ inputs.type }}
 
@@ -61,10 +61,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
-          tag_name: v$(hatch version)
-          title: Release v$(hatch version)
-          body: |
-            Release v$(hatch version) body
+          # tag_name: v$(hatch version)
+          generate_release_notes: true
 
       # - name: Publish to PyPI
       #   uses: pypa/gh-action-pypi-publish@release
