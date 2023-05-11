@@ -35,6 +35,9 @@ jobs:
         run: hatch version $TYPE
         env:
           TYPE: ${{ inputs.type }}
+      
+      - name: commit version change
+        run: git commit -a -m "Release v$(hatch version)"
 
       - name: Create Git Tag
         run: git tag v$(hatch version)
