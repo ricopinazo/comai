@@ -28,8 +28,10 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Install dependencies
-        run: pip install hatch
+      - name: Build project
+        run: |
+          pip install hatch
+          hatch build
 
       - name: setup git
         run: |
