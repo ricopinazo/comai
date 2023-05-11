@@ -44,7 +44,9 @@ jobs:
           TYPE: ${{ inputs.type }}
 
       - name: Create Git Tag
-        run: git tag v$(hatch version)
+        run: |
+          git tag v$(hatch version)
+          echo "TAG_NAME=v$(hatch version)" >> $GITHUB_ENV
 
       - name: Print version
         run: hatch version
@@ -61,7 +63,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
-          tag_name: v$(hatch version)
+          tag_name: ${{ env.TAG_NAME }}
           generate_release_notes: true
 
       # - name: Publish to PyPI
