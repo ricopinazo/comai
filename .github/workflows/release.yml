@@ -61,7 +61,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
-          # tag_name: v$(hatch version)
+          tag_name: v$(hatch version)
           generate_release_notes: true
 
       # - name: Publish to PyPI
