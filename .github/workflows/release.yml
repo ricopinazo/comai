@@ -36,14 +36,17 @@ jobs:
         env:
           TYPE: ${{ inputs.type }}
 
+      - name: Create Git Tag
+        run: git tag v$(hatch version)
+
       - name: Print version
         run: hatch version
 
+      - name: Print tags
+        run: git tag
+
       # - name: Push Changes
       #   run: git push origin master
-
-      # - name: Create Git Tag
-      #   run: git tag v$(python setup.py --version)
 
       # - name: Push Git Tag
       #   run: git push origin --tags
