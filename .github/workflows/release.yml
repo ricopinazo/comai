@@ -31,13 +31,17 @@ jobs:
       - name: Install dependencies
         run: pip install hatch
 
+      - name: setup git
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+
       - name: Bump Version
-        run: hatch version $TYPE
+        run: |
+          hatch version $TYPE
+          git commit -a -m "Release v$(hatch version)"
         env:
           TYPE: ${{ inputs.type }}
-      
-      - name: commit version change
-        run: git commit -a -m "Release v$(hatch version)"
 
       - name: Create Git Tag
         run: git tag v$(hatch version)
