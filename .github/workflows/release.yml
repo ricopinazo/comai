@@ -68,7 +68,8 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           generate_release_notes: true
 
-      # - name: Publish to PyPI
-      #   uses: pypa/gh-action-pypi-publish@release
-      #   with:
-      #     password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release
+        with:
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository-url: https://test.pypi.org/legacy/
