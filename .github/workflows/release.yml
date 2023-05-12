@@ -23,6 +23,11 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
+      - name: setup git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -40,11 +45,6 @@ jobs:
 
       - name: Build project
         run: hatch build
-
-      - name: setup git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
         
       - name: Create Git Tag
         run: |
