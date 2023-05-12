@@ -28,15 +28,8 @@ jobs:
         with:
           python-version: 3.x
 
-      - name: Build project
-        run: |
-          pip install hatch
-          hatch build
-
-      - name: setup git
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+      - name: Install hatch
+        run: pip install hatch
 
       - name: Bump Version
         run: |
@@ -45,16 +38,18 @@ jobs:
         env:
           TYPE: ${{ inputs.type }}
 
+      - name: Build project
+        run: hatch build
+
+      - name: setup git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+        
       - name: Create Git Tag
         run: |
           git tag v$(hatch version)
           echo "TAG_NAME=v$(hatch version)" >> $GITHUB_ENV
-
-      - name: Print version
-        run: hatch version
-
-      - name: Print log
-        run: git log --oneline -n10
 
       - name: Push Changes
         run: |
@@ -68,7 +63,7 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           generate_release_notes: true
 
-      - name: Publish to PyPI
+      - name: Publish to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
