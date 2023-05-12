@@ -64,7 +64,6 @@ jobs:
           generate_release_notes: true
 
       - name: Publish to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
-          repository-url: https://test.pypi.org/legacy/
+        run: hatch publish -r https://test.pypi.org/legacy/ -u __token__ -a $TEST_TOKEN
+        env:
+          TEST_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
