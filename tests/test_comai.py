@@ -2,7 +2,7 @@ import pytest
 import sys
 import os
 from dotenv import load_dotenv
-from comai_ricopinazo import cli, config
+from comai import cli, config
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
