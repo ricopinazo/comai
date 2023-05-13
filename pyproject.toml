@@ -20,11 +20,11 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-  "openai",
-  "appdirs",
-  "cryptography",
-  "termcolor",
-  "getch",
+  "openai==0.27.5",
+  "appdirs==1.4.4",
+  "cryptography==40.0.2",
+  "termcolor==2.3.0",
+  "getch==1.0",
 ]
 
 [project.urls]
