@@ -7,7 +7,7 @@ on:
         description: 'Release type'
         required: true
         default: 'minor'
-        type: choice
+        type: preview
         options:
         - major
         - minor
@@ -16,54 +16,63 @@ on:
         - release
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-
+    permissions:
+      id-token: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
       - name: setup git
         run: |
           git config user.name "$GITHUB_ACTOR"
           git config user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
-
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.x
-
       - name: Install hatch
         run: pip install hatch
-
       - name: Bump Version
         run: |
           hatch version $TYPE
           git commit -am "Release v$(hatch version)"
         env:
           TYPE: ${{ inputs.type }}
-
       - name: Build project
         run: hatch build
-        
       - name: Create Git Tag
         run: |
           git tag v$(hatch version)
           echo "TAG_NAME=v$(hatch version)" >> $GITHUB_ENV
-
       - name: Push Changes
         run: |
           git push origin --all
           git push origin --tags
-
       - name: Publish Release
         uses: softprops/action-gh-release@v1
         with:
           files: dist/*
           tag_name: ${{ env.TAG_NAME }}
           generate_release_notes: true
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: package
+          path: dist/
 
-      - name: Publish to TestPyPI
-        run: hatch publish -r https://test.pypi.org/legacy/ -u __token__ -a $TEST_TOKEN
-        env:
-          TEST_TOKEN: ${{ secrets.TEST_PYPI_API_TOKEN }}
+  publish:
+    needs: release
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      id-token: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: package
+       - name: Publish package distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
