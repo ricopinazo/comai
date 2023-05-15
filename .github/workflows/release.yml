@@ -70,6 +70,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: package
+      - name: Print directory contents
+        run: ls
       - name: Publish package distributions to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
