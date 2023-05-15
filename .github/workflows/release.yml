@@ -53,7 +53,7 @@ jobs:
           files: dist/*
           tag_name: ${{ env.TAG_NAME }}
           generate_release_notes: true
-      - name: Upload artifact
+      - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: package
@@ -66,12 +66,11 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - name: Download artifact
+      - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
           name: package
-      - name: Print directory contents
-        run: ls
+          path: dist
       - name: Publish package distributions to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
