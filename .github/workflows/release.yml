@@ -57,12 +57,12 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: package
-          path: dist/
+          path: dist/*
 
   publish:
     needs: release
     runs-on: ubuntu-latest
-    environment: production
+    environment: publishing
     permissions:
       id-token: write
     steps:
