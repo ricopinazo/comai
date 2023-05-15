@@ -16,7 +16,10 @@ on:
         - release
 
 jobs:
+  test:
+    uses: ./.github/workflows/tests.yml
   release:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
@@ -60,7 +63,7 @@ jobs:
           path: dist/*
 
   publish:
-    needs: release
+    needs: [test, release]
     runs-on: ubuntu-latest
     environment: publishing
     permissions:
