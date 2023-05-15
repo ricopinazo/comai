@@ -6,8 +6,8 @@ on:
       type:
         description: 'Release type'
         required: true
-        default: 'minor'
-        type: preview
+        default: 'preview'
+        type: choice
         options:
         - major
         - minor
