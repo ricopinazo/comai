@@ -18,6 +18,8 @@ on:
 jobs:
   test:
     uses: ./.github/workflows/tests.yml
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   release:
     needs: test
     runs-on: ubuntu-latest
