@@ -65,7 +65,7 @@ jobs:
           path: dist/*
 
   test-publish:
-    needs: [test, release]
+    needs: release
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -81,7 +81,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   publish:
-    needs: [test, release, test-publish]
+    needs: test-publish
     runs-on: ubuntu-latest
     environment: publishing
     permissions:
