@@ -44,6 +44,10 @@ jobs:
           TYPE: ${{ inputs.type }}
       - name: Build project
         run: hatch build
+      - name: Publish package distributions to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
       - name: Create Git Tag
         run: |
           git tag v$(hatch version)
@@ -76,7 +80,5 @@ jobs:
         with:
           name: package
           path: dist
-      - name: Publish package distributions to TestPyPI
+      - name: Publish package distributions to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
