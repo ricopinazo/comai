@@ -44,10 +44,6 @@ jobs:
           TYPE: ${{ inputs.type }}
       - name: Build project
         run: hatch build
-      - name: Publish package distributions to TestPyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
       - name: Create Git Tag
         run: |
           git tag v$(hatch version)
@@ -68,8 +64,24 @@ jobs:
           name: package
           path: dist/*
 
-  publish:
+  test-publish:
     needs: [test, release]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: package
+          path: dist
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  publish:
+    needs: [test, release, test-publish]
     runs-on: ubuntu-latest
     environment: publishing
     permissions:
