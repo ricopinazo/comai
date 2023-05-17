@@ -1,5 +1,20 @@
 # Comai - The AI powered terminal assistant
 
+<p align="left">
+<a href="https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg">
+<img alt="Test and Build" src="https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg" />
+</a>
+<a href="https://github.com/ricopinazo/comai/releases">
+<img alt="Latest Release" src="https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases" />
+</a>
+<a href="https://pypi.org/project/comai/">
+<img alt="PyPI" src="https://img.shields.io/pypi/v/comai">
+</a>
+<a href="https://github.com/ricopinazo/comai/issues">
+<img alt="Issues" src="https://img.shields.io/github/issues/ricopinazo/comai?color=brightgreen" />
+</a>
+</p>
+
 `comai` is an open source terminal assistant powered by OpenAI API that enables you to interact with your command line interface using natural language instructions. It simplifies your workflow by converting natural language queries into executable commands. No more memorizing complex syntax. Just chat with `comai` using plain English!
 
 ## Installation 🚀
