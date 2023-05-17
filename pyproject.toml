@@ -28,7 +28,9 @@ dependencies = [
 ]
 
 [project.urls]
+homepage = "https://github.com/ricopinazo/comai"
 repository = "https://github.com/ricopinazo/comai"
+issues = "https://github.com/ricopinazo/comai/issues"
 
 [project.scripts]
 comai = "comai.cli:main"
