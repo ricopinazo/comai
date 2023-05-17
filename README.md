@@ -10,7 +10,7 @@ Getting `comai` up and running is a breeze. Simply use `pip` to install the late
 pip install comai
 ```
 
-The first time you run it, it'll ask you for an OpenAI API key.
+The first time you run it, it'll ask you for an OpenAI API key. You can create a developer account [here](https://platform.openai.com/overview). Once in your account, go to `API Keys` section and `Create new secret key`. We recommend setting a usage limit under `Billing`/`Usage limits`.
 
 ## Usage Examples 🎉
 
