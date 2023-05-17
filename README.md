@@ -39,7 +39,7 @@ $ comai print a cow saying Moo!
 💡≫ echo "Moo!" | cowsay
 ```
 
-2. Update the main branch and merge it into the current branch:
+2. Master the intricacies of `git`:
 ```shell
 $ comai update the main branch and merge it into the current
 💡≫ git checkout main; git pull; git checkout -; git merge main
