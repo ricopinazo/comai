@@ -19,10 +19,16 @@
 
 ## Installation 🚀
 
-Getting `comai` up and running is a breeze. Simply use `pip` to install the latest tested version:
+Getting `comai` up and running is a breeze. You can simply use `pip` to install the latest tested version:
 
 ```shell
 pip install comai
+```
+
+However, if you usualy work with different python environments, since this python package only contains a script it makes sense to use [`pipx`](https://pypa.github.io/pipx/) instead:
+
+```shell
+pipx install comai
 ```
 
 The first time you run it, it'll ask you for an OpenAI API key. You can create a developer account [here](https://platform.openai.com/overview). Once in your account, go to `API Keys` section and `Create new secret key`. We recommend setting a usage limit under `Billing`/`Usage limits`.
