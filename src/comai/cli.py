@@ -1,4 +1,3 @@
-import openai
 import os
 import sys
 from termcolor import colored
@@ -6,36 +5,13 @@ import getch
 from time import sleep
 from threading import Thread, Lock
 
-from . import config
+from . import config, translation
 
 LEFT = '\033[D'
 
 num_dots = 0
 initial_prompt = '🧠≫ '
 answer_prompt = '💡≫ '
-
-def load_openai_api_key():
-    api_key = keyring.get_password("comai", "openai_api_key")
-    if api_key is None:
-        api_key = input("Input OpenAI API key: ")
-        assert len(api_key) > 0
-        keyring.set_password("comai", "openai_api_key", api_key)
-    return api_key
-
-def translate_to_command(nl_description, openai_api_key): 
-    openai.api_key = openai_api_key
-    prompt = (f"Convert the following natural language instruction to a Unix command:\n"
-                f"{nl_description}\n"
-                f"UNIX command:")
-    response = openai.Completion.create(
-        engine="text-davinci-002",
-        prompt=prompt,
-        max_tokens=60,
-        n=1,
-        stop=None,
-        temperature=0.2,
-    )
-    return response.choices[0].text.strip()
 
 def print_wait_dots(print_mutex):
     global num_dots
@@ -89,7 +65,7 @@ def main():
         config.save_api_key(api_key)
 
     print_mutex = start_wait_prompt()
-    command = translate_to_command(input_text, api_key)
+    command = translation.translate_to_command(input_text, api_key)
     print_answer(command, print_mutex)
 
     char = getch.getch()

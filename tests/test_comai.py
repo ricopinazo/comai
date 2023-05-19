@@ -2,7 +2,7 @@ import pytest
 import sys
 import os
 from dotenv import load_dotenv
-from comai import cli, config
+from comai import cli, config, translation
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
@@ -19,5 +19,5 @@ def test_installation_flow(monkeypatch):
     cli.main()
 
 def test_translation():
-    c1 = cli.translate_to_command("show files", api_key)
+    c1 = translation.translate_to_command("show files", api_key)
     assert c1 == 'ls'
