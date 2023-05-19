@@ -20,8 +20,8 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
+  "typer==0.9.0",
   "openai==0.27.5",
-  "appdirs==1.4.4",
   "cryptography==40.0.2",
   "termcolor==2.3.0",
   "getch==1.0",
@@ -33,7 +33,7 @@ repository = "https://github.com/ricopinazo/comai"
 issues = "https://github.com/ricopinazo/comai/issues"
 
 [project.scripts]
-comai = "comai.cli:main"
+comai = "comai.cli:app"
 
 [project.optional-dependencies]
 test = [

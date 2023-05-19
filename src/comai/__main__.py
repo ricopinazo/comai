@@ -1,3 +1,4 @@
-from comai.cli import main
+from comai.cli import app
 
-main()
+if __name__ == "__main__":
+    app()

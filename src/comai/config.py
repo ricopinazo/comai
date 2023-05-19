@@ -1,11 +1,10 @@
-import configparser
 import os
-import appdirs
+import configparser
+import typer
 from cryptography.fernet import Fernet
 
 app_name = "comai"
-app_author = "ricopinazo"
-config_dir = appdirs.user_config_dir(app_name, app_author)
+config_dir = typer.get_app_dir(app_name, force_posix=True)
 config_path = os.path.join(config_dir, "config.ini")
 
 encryption_key = b'QUMSqTJ5nape3p8joqkgHFCzyJdyQtqzHk6dCuGl9Nw='

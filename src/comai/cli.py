@@ -1,17 +1,22 @@
 import os
-import sys
+import typer
 from termcolor import colored
 import getch
+from typing import List, Tuple, Optional
+from typing_extensions import Annotated
 from time import sleep
 from threading import Thread, Lock
 
-from . import config, translation
+from . import config, translation, __version__
 
 LEFT = '\033[D'
 
 num_dots = 0
 initial_prompt = '🧠≫ '
 answer_prompt = '💡≫ '
+
+
+app = typer.Typer()
 
 def print_wait_dots(print_mutex):
     global num_dots
@@ -54,13 +59,21 @@ def print_answer(command: str, print_mutex):
     print(colored(answer_prompt, 'green'), end='', flush=True)
     print_words_sequentially(command)
 
-def main():
-    assert len(sys.argv) > 1
-    input_text = ' '.join(sys.argv[1:])
+def version_callback(value: bool):
+    if value:
+        print(f"comai version: {__version__}")
+        raise typer.Exit()
+
+@app.command()
+def main(
+    instructions: List[str],
+    version: Annotated[Optional[bool], typer.Option("--version", callback=version_callback)] = None
+):
+    input_text = ' '.join(instructions[1:])
 
     api_key = config.load_api_key()
     if not api_key:
-        api_key = input("Input OpenAI API key: ")
+        api_key = typer.prompt("Input OpenAI API key")
         assert len(api_key) > 0
         config.save_api_key(api_key)
 
