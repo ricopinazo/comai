@@ -10,7 +10,7 @@
 
 ## Installation 🚀
 
-Getting `comai` up and running is a breeze. You can simply use `pip` to install the latest tested version:
+Getting `comai` up and running is a breeze. You can simply use [`pip`](https://pip.pypa.io/en/stable/) to install the latest tested version:
 
 ```shell
 pip install comai
