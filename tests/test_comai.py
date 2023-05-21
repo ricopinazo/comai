@@ -36,5 +36,5 @@ def test_missing_instruction():
     assert result.exit_code != 0
 
 def test_translation():
-    c1 = translation.translate_to_command("show files", api_key)
-    assert c1 == 'ls'
+    command = translation.translate_to_command("show files", api_key)
+    assert ''.join(command) == 'ls'
