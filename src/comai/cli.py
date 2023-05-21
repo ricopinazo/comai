@@ -2,7 +2,7 @@ import os
 import typer
 from termcolor import colored
 import getch
-from typing import List, Tuple, Optional
+from typing import List, Optional
 from typing_extensions import Annotated
 from time import sleep
 from threading import Thread, Lock
@@ -48,7 +48,10 @@ def start_wait_prompt():
     t.start()
     return print_mutex
 
-def print_answer(command: str, print_mutex):
+def print_answer(command_chunks: str, print_mutex):
+
+    first_chunk = next(command_chunks)
+
     print_mutex.acquire()
     characters_to_remove = len(initial_prompt) + num_dots
     print(LEFT * characters_to_remove, end='') 
@@ -57,19 +60,26 @@ def print_answer(command: str, print_mutex):
     print(LEFT * characters_to_remove, end='')
 
     print(colored(answer_prompt, 'green'), end='', flush=True)
-    print_words_sequentially(command)
+    print(first_chunk, end='', flush=True)
+    for chunk in command_chunks:
+        print(chunk, end='', flush=True)
 
 def version_callback(value: bool):
     if value:
         print(f"comai version: {__version__}")
         raise typer.Exit()
+    
+def save_command(command_chunks, command: list):
+    for chunk in command_chunks:
+        command.append(chunk)
+        yield chunk
 
 @app.command()
 def main(
     instructions: List[str],
     version: Annotated[Optional[bool], typer.Option("--version", callback=version_callback)] = None
 ):
-    input_text = ' '.join(instructions[1:])
+    input_text = ' '.join(instructions)
 
     api_key = config.load_api_key()
     if not api_key:
@@ -78,8 +88,11 @@ def main(
         config.save_api_key(api_key)
 
     print_mutex = start_wait_prompt()
-    command = translation.translate_to_command(input_text, api_key)
-    print_answer(command, print_mutex)
+    command_chunks = translation.translate_to_command(input_text, api_key)
+    command = []
+    command_chunks = save_command(command_chunks, command)
+    print_answer(command_chunks, print_mutex)
+    command = ''.join(command)
 
     char = getch.getch()
     print()
