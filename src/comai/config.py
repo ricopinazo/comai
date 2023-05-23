@@ -9,7 +9,11 @@ APP_NAME = "comai"
 config_dir = typer.get_app_dir(APP_NAME, force_posix=True)
 key_path = os.path.join(config_dir, "config.ini")
 session_id = os.getenv('COMAI_SESSION')
-log_path = os.path.join(config_dir, session_id)
+log_path = None
+try:
+    log_path = os.path.join(config_dir, session_id)
+except Exception:
+    pass
 
 encryption_key = b'QUMSqTJ5nape3p8joqkgHFCzyJdyQtqzHk6dCuGl9Nw='
 cipher_suite = Fernet(encryption_key)
@@ -40,12 +44,13 @@ def delete_api_key():
         os.remove(key_path)
 
 def save_message(message):
-    messages = get_prev_messages()
-    messages.append(message)
-    if len(messages) > CONTEXT_SIZE:
-        messages = messages[-CONTEXT_SIZE:]
-    with open(log_path, 'bw') as log_file:
-        pickle.dump(messages, log_file)
+    if log_path:
+        messages = get_prev_messages()
+        messages.append(message)
+        if len(messages) > CONTEXT_SIZE:
+            messages = messages[-CONTEXT_SIZE:]
+        with open(log_path, 'bw') as log_file:
+            pickle.dump(messages, log_file)
 
 def get_prev_messages() -> list:
     try:
