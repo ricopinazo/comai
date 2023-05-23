@@ -88,11 +88,14 @@ def main(
         config.save_api_key(api_key)
 
     print_mutex = start_wait_prompt()
-    command_chunks = translation.translate_to_command(input_text, api_key)
+    prev_messages = config.get_prev_messages()
+    config.save_message({'role': 'user', 'content': input_text})
+    command_chunks = translation.translate_to_command(input_text, api_key, prev_messages)
     command = []
     command_chunks = save_command(command_chunks, command)
     print_answer(command_chunks, print_mutex)
     command = ''.join(command)
+    config.save_message({'role': 'assistant', 'content': command})
 
     char = getch.getch()
     print()
