@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 from time import sleep
 from threading import Thread, Lock
 
-from . import config, translation, __version__
+from . import config, context, translation, __version__
 
 LEFT = '\033[D'
 
@@ -90,7 +90,8 @@ def main(
     print_mutex = start_wait_prompt()
     prev_messages = config.get_prev_messages()
     config.save_message({'role': 'user', 'content': input_text})
-    command_chunks = translation.translate_to_command(input_text, api_key, prev_messages)
+    ctx = context.get_context()
+    command_chunks = translation.translate_to_command(input_text, api_key, prev_messages, ctx)
     command = []
     command_chunks = save_command(command_chunks, command)
     print_answer(command_chunks, print_mutex)
