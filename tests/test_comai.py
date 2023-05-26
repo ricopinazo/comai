@@ -3,7 +3,7 @@ import sys
 import os
 from typer.testing import CliRunner
 from dotenv import load_dotenv
-from comai import cli, config, translation,  __version__
+from comai import cli, config, translation, context,  __version__
 
 load_dotenv()
 api_key = os.getenv('OPENAI_API_KEY')
@@ -26,6 +26,8 @@ def test_installation_flow(monkeypatch):
     assert "Input OpenAI API key: " not in result.stdout
     assert "ls" in result.stdout
 
+    print("here2")
+
 def test_version():
     result = runner.invoke(cli.app, ["--version"])
     assert result.exit_code == 0
@@ -36,5 +38,6 @@ def test_missing_instruction():
     assert result.exit_code != 0
 
 def test_translation():
-    command = translation.translate_to_command("show files", api_key, [])
+    ctx = context.get_context()
+    command = translation.translate_to_command("show files", api_key, [], ctx)
     assert ''.join(command) == 'ls'
