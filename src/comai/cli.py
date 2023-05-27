@@ -8,6 +8,7 @@ from time import sleep
 from threading import Thread, Lock
 
 from . import config, context, translation, __version__
+from .interactions import Command, Query
 
 LEFT = '\033[D'
 
@@ -88,15 +89,16 @@ def main(
         config.save_api_key(api_key)
 
     print_mutex = start_wait_prompt()
-    prev_messages = config.get_prev_messages()
-    config.save_message({'role': 'user', 'content': input_text})
+    prev_messages = config.get_prev_interactions()
     ctx = context.get_context()
     command_chunks = translation.translate_to_command(input_text, api_key, prev_messages, ctx)
     command = []
     command_chunks = save_command(command_chunks, command)
     print_answer(command_chunks, print_mutex)
     command = ''.join(command)
-    config.save_message({'role': 'assistant', 'content': command})
+
+    config.save_interaction(Query(input_text))
+    config.save_interaction(Command(command))
 
     char = getch.getch()
     print()
