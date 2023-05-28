@@ -10,6 +10,16 @@ api_key = os.getenv('OPENAI_API_KEY')
 
 runner = CliRunner()
 
+def test_invalid_api_key(monkeypatch):
+    config.delete_api_key()
+
+    monkeypatch.setattr(cli.getch, 'getch', lambda: '\n')
+    monkeypatch.setattr(cli.typer, 'prompt', lambda _: "bad-api-key" )
+
+    result = runner.invoke(cli.app, ["show", "files"])
+    assert result.exit_code != 0
+    assert "API key not valid" in result.stdout
+
 def test_installation_flow(monkeypatch):
     config.delete_api_key()
    
@@ -25,16 +35,6 @@ def test_installation_flow(monkeypatch):
     assert result.exit_code == 0
     assert "Input OpenAI API key: " not in result.stdout
     assert "ls" in result.stdout
-
-def test_invalid_api_key(monkeypatch):
-    config.delete_api_key()
-
-    monkeypatch.setattr(cli.getch, 'getch', lambda: '\n')
-    monkeypatch.setattr(cli.typer, 'prompt', lambda _: "bad-api-key" )
-
-    result = runner.invoke(cli.app, ["show", "files"])
-    assert result.exit_code != 0
-    assert "API key not valid" in result.stdout
 
 def test_version():
     result = runner.invoke(cli.app, ["--version"])
