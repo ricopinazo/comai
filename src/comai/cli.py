@@ -1,12 +1,9 @@
 import os
 import typer
 import itertools
-from termcolor import colored
 import getch
 from typing import List, Optional, Iterator
 from typing_extensions import Annotated
-from time import sleep
-from threading import Thread, Lock
 
 from . import config, context, translation, __version__
 from .interactions import Command, Query
