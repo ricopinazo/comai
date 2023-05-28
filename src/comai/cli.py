@@ -11,27 +11,33 @@ from .animations import query_animation, print_answer
 
 app = typer.Typer()
 
+
 def version_callback(value: bool):
     if value:
         print(f"comai version: {__version__}")
         raise typer.Exit()
-    
+
+
 def save_command(command_chunks, command: list):
     for chunk in command_chunks:
         command.append(chunk)
         yield chunk
+
 
 def wait_for_first_chunk(iterator: Iterator[str]):
     iter1, iter2 = itertools.tee(iterator)
     _ = next(iter1)
     return iter2
 
+
 @app.command()
 def main(
     instructions: List[str],
-    version: Annotated[Optional[bool], typer.Option("--version", callback=version_callback)] = None
+    version: Annotated[
+        Optional[bool], typer.Option("--version", callback=version_callback)
+    ] = None,
 ):
-    input_text = ' '.join(instructions)
+    input_text = " ".join(instructions)
 
     api_key = config.load_api_key()
     if not api_key:
@@ -47,12 +53,14 @@ def main(
     with query_animation():
         prev_interactions = config.get_prev_interactions()
         ctx = context.get_context()
-        command_chunks = translation.translate_to_command(input_text, api_key, prev_interactions, ctx)
+        command_chunks = translation.translate_to_command(
+            input_text, api_key, prev_interactions, ctx
+        )
         command_chunks = save_command(command_chunks, command)
         command_chunks = wait_for_first_chunk(command_chunks)
 
     print_answer(command_chunks)
-    command = ''.join(command)
+    command = "".join(command)
 
     config.save_interaction(Query(input_text))
     config.save_interaction(Command(command))
