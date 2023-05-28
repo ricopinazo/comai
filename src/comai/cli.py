@@ -86,6 +86,9 @@ def main(
     if not api_key:
         api_key = typer.prompt("Input OpenAI API key")
         assert len(api_key) > 0
+        if not translation.validate_api_key(api_key):
+            print("API key not valid")
+            exit(1)
         config.save_api_key(api_key)
 
     print_mutex = start_wait_prompt()
