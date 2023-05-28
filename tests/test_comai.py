@@ -18,7 +18,6 @@ def test_installation_flow(monkeypatch):
 
     result = runner.invoke(cli.app, ["show", "files"])
     assert result.exit_code == 0
-     # assert "Input OpenAI API key: " not in result.stdout # FIXME: this should work
     assert "ls" in result.stdout
     
     result = runner.invoke(cli.app, ["show", "files"])
@@ -26,7 +25,21 @@ def test_installation_flow(monkeypatch):
     assert "Input OpenAI API key: " not in result.stdout
     assert "ls" in result.stdout
 
-    print("here2")
+def test_installation_flow(monkeypatch):
+    config.delete_api_key()
+   
+    monkeypatch.setattr(cli.getch, 'getch', lambda: '\n')
+    monkeypatch.setattr(cli.typer, 'prompt', lambda _: api_key )
+
+    result = runner.invoke(cli.app, ["show", "files"])
+    assert result.exit_code == 0
+     # assert "Input OpenAI API key: " not in result.stdout # FIXME: this should work
+    assert "ls" in result.stdout
+    
+    result = runner.invoke(cli.app, ["show", "files"])
+    assert result.exit_code == 0
+    assert "Input OpenAI API key: " not in result.stdout
+    assert "ls" in result.stdout
 
 def test_version():
     result = runner.invoke(cli.app, ["--version"])

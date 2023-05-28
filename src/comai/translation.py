@@ -10,7 +10,7 @@ def adapt_interaction(interaction: Interaction):
         case Command(content):
             return {'role': 'assistant', 'content': content}
 
-def translate_to_command(nl_description, openai_api_key, prev_interactions: List[Interaction], context: context.Context) -> Iterator[str]: 
+def translate_to_command(nl_description: str, openai_api_key: str, prev_interactions: List[Interaction], context: context.Context) -> Iterator[str]: 
     openai.api_key = openai_api_key
     system = f'You are a bot translating natural language instructions into commands for {context.shell} in {context.system}. Your output is just an executable command, with no explanation'
     system_message = {'role': 'system', 'content': system}
@@ -33,3 +33,10 @@ def translate_to_command(nl_description, openai_api_key, prev_interactions: List
             yield chunk.choices[0].delta.content
 
     # TODO: set the new state for messages record here
+
+def validate_api_key(openai_api_key) -> bool:
+    try:
+        openai.Model.list(api_key=openai_api_key)
+        return True
+    except Exception:
+        return False
