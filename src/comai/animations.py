@@ -27,8 +27,6 @@ def print_query_animation(finish: Event):
         if finish.wait(FRAME_PERIOD):
             break
     sys.stdout.write(f"\r{CLEAR_LINE}")
-    print(colored(LOADED_PROMPT, "green"), end="", flush=True)
-    print(f" {CONTACT_PROMPT}")
 
 
 @contextmanager
@@ -45,10 +43,15 @@ def query_animation() -> Generator[None, None, None]:
 
 def print_answer(command_chunks: str):
     print(colored(ANSWER_PROMPT, "magenta"), end="", flush=True)
+    color = "cyan"
     first_chunk = next(command_chunks)
-    print(first_chunk, end="", flush=True)
+    print(colored(first_chunk, color), end="", flush=True)
     for chunk in command_chunks:
-        print(chunk, end="", flush=True)
+        print(colored(chunk, color), end="", flush=True)
+
+
+def print_menu() -> None:
+    print("[↩] execute [x↩] cancel")
 
 
 def hide_cursor() -> None:

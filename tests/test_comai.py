@@ -1,5 +1,4 @@
 import pytest
-import sys
 import os
 from typer.testing import CliRunner
 from dotenv import load_dotenv
@@ -11,29 +10,23 @@ api_key = os.getenv("OPENAI_API_KEY")
 runner = CliRunner()
 
 
-def test_invalid_api_key(monkeypatch):
+def test_invalid_api_key():
     config.delete_api_key()
 
-    monkeypatch.setattr(cli.getch, "getch", lambda: "\n")
-    monkeypatch.setattr(cli.typer, "prompt", lambda _: "bad-api-key")
-
-    result = runner.invoke(cli.app, ["show", "files"])
+    result = runner.invoke(cli.app, ["show", "files"], input=f"bad-api-key\n")
     assert result.exit_code != 0
     assert "API key not valid" in result.stdout
 
 
-def test_installation_flow(monkeypatch):
+def test_installation_flow():
     config.delete_api_key()
 
-    monkeypatch.setattr(cli.getch, "getch", lambda: "\n")
-    monkeypatch.setattr(cli.typer, "prompt", lambda _: api_key)
-
-    result = runner.invoke(cli.app, ["show", "files"])
+    result = runner.invoke(cli.app, ["show", "files"], input=f"{api_key}\n\n")
     assert result.exit_code == 0
     # assert "Input OpenAI API key: " not in result.stdout # FIXME: this should work
     assert "ls" in result.stdout
 
-    result = runner.invoke(cli.app, ["show", "files"])
+    result = runner.invoke(cli.app, ["show", "files"], input=f"\n")
     assert result.exit_code == 0
     assert "Input OpenAI API key: " not in result.stdout
     assert "ls" in result.stdout

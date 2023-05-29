@@ -1,13 +1,19 @@
 import os
 import typer
 import itertools
-import getch
+from enum import Enum
 from typing import List, Optional, Iterator
 from typing_extensions import Annotated
 
 from . import config, context, translation, __version__
 from .interactions import Command, Query
-from .animations import query_animation, print_answer, show_cursor, hide_cursor
+from .menu import get_option_from_menu, MenuOption
+from .animations import (
+    query_animation,
+    print_answer,
+    show_cursor,
+    hide_cursor,
+)
 
 app = typer.Typer()
 
@@ -59,10 +65,11 @@ def main_normal_flow(instructions: List[str]):
     config.save_interaction(Query(input_text))
     config.save_interaction(Command(command))
 
-    char = getch.getch()
-    print()
-    if char == "\n":
-        os.system(command)
+    match get_option_from_menu():
+        case MenuOption.run:
+            os.system(command)
+        case MenuOption.cancel:
+            pass
 
 
 @app.command()

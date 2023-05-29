@@ -24,7 +24,6 @@ dependencies = [
   "openai==0.27.5",
   "cryptography==40.0.2",
   "termcolor==2.3.0",
-  "getch==1.0",
 ]
 
 [project.urls]
