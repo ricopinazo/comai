@@ -5,33 +5,34 @@ from typing import Generator
 from termcolor import colored
 
 LEFT = "\033[D"
+CLEAR_LINE = "\033[K"
 INITIAL_PROMPT = "🧠≫ "
-ANSWER_PROMPT = "💡≫ "
-FRAME_PERIOD = 0.2
+LOADED_PROMPT = "✔"
+ANSWER_PROMPT = "❯ "
+CONTACT_PROMPT = "fetching command"
+FRAME_PERIOD = 0.1
+LOADING_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+
 stdout_is_tty = sys.stdout.isatty()
 
 
 def print_query_animation(finish: Event):
-    num_dots = 0
+    next_frame = 0
     while not finish.wait(0):
-        if num_dots >= 3:
-            print(LEFT * 3 + "   " + LEFT * 3, end="", flush=True)
-            num_dots = 0
-        else:
-            print(".", end="", flush=True)
-            num_dots += 1
+        sys.stdout.write(f"\r{CLEAR_LINE}")
+        sys.stdout.write(colored(LOADING_FRAMES[next_frame], "cyan"))
+        sys.stdout.write(f" {CONTACT_PROMPT}")
+        sys.stdout.flush()
+        next_frame = (next_frame + 1) % len(LOADING_FRAMES)
         if finish.wait(FRAME_PERIOD):
             break
-    characters_to_remove = len(INITIAL_PROMPT) + num_dots
-    print(LEFT * characters_to_remove, end="")
-    print(LEFT, end="")
-    print(" " * characters_to_remove, end="")
-    print(LEFT * characters_to_remove, end="")
+    sys.stdout.write(f"\r{CLEAR_LINE}")
+    print(colored(LOADED_PROMPT, "green"), end="", flush=True)
+    print(f" {CONTACT_PROMPT}")
 
 
 @contextmanager
 def query_animation() -> Generator[None, None, None]:
-    print(colored(INITIAL_PROMPT, "cyan"), end="")
     finish = Event()
     t = Thread(target=print_query_animation, args=(finish,))
     t.start()
@@ -43,7 +44,7 @@ def query_animation() -> Generator[None, None, None]:
 
 
 def print_answer(command_chunks: str):
-    print(colored(ANSWER_PROMPT, "green"), end="", flush=True)
+    print(colored(ANSWER_PROMPT, "magenta"), end="", flush=True)
     first_chunk = next(command_chunks)
     print(first_chunk, end="", flush=True)
     for chunk in command_chunks:

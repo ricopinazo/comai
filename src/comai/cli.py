@@ -7,7 +7,7 @@ from typing_extensions import Annotated
 
 from . import config, context, translation, __version__
 from .interactions import Command, Query
-from .animations import query_animation, print_answer
+from .animations import query_animation, print_answer, show_cursor, hide_cursor
 
 app = typer.Typer()
 
@@ -30,13 +30,7 @@ def wait_for_first_chunk(iterator: Iterator[str]):
     return iter2
 
 
-@app.command()
-def main(
-    instructions: List[str],
-    version: Annotated[
-        Optional[bool], typer.Option("--version", callback=version_callback)
-    ] = None,
-):
+def main_normal_flow(instructions: List[str]):
     input_text = " ".join(instructions)
 
     api_key = config.load_api_key()
@@ -69,3 +63,19 @@ def main(
     print()
     if char == "\n":
         os.system(command)
+
+
+@app.command()
+def main(
+    instructions: List[str],
+    version: Annotated[
+        Optional[bool], typer.Option("--version", callback=version_callback)
+    ] = None,
+):
+    hide_cursor()
+    try:
+        main_normal_flow(instructions)
+    except Exception as e:
+        raise e
+    finally:
+        show_cursor()
