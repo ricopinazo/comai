@@ -68,9 +68,9 @@ These are just a few examples of how `comai` can help you harness the power of t
 
 If you're interested in joining the development of new features for `comai`, here's all you need to get started:
 
-1. Clone the repository.
+1. Clone the [repository](github.com/ricopinazo/comai) and navigate to the root folder.
 2. Install the package in editable mode by running `pip install -e .`.
-3. Run the tests using pytest. Make sure you have the `OPENAI_API_KEY` environment variable set up with your OpenAI API key. Alternatively, you can create a file named `.env` and define the variable there.
+3. Run the tests using `pytest`. Make sure you have the `OPENAI_API_KEY` environment variable set up with your OpenAI API key. Alternatively, you can create a file named `.env` and define the variable there.
 
 
 This project utilizes black for code formatting. To ensure your changes adhere to this format, simply follow these steps:
