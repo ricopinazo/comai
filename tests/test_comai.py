@@ -1,4 +1,3 @@
-import pytest
 import os
 from typer.testing import CliRunner
 from dotenv import load_dotenv
@@ -13,7 +12,7 @@ runner = CliRunner()
 def test_invalid_api_key():
     config.delete_api_key()
 
-    result = runner.invoke(cli.app, ["show", "files"], input=f"bad-api-key\n")
+    result = runner.invoke(cli.app, ["show", "files"], input="bad-api-key\n")
     assert result.exit_code != 0
     assert "API key not valid" in result.stdout
 
@@ -26,7 +25,7 @@ def test_installation_flow():
     # assert "Input OpenAI API key: " not in result.stdout # FIXME: this should work
     assert "ls" in result.stdout
 
-    result = runner.invoke(cli.app, ["show", "files"], input=f"\n")
+    result = runner.invoke(cli.app, ["show", "files"], input="\n")
     assert result.exit_code == 0
     assert "Input OpenAI API key: " not in result.stdout
     assert "ls" in result.stdout
@@ -35,7 +34,7 @@ def test_installation_flow():
 def test_version():
     result = runner.invoke(cli.app, ["--version"])
     assert result.exit_code == 0
-    assert "comai version: {__version__}" not in result.stdout
+    assert f"comai version: {__version__}" in result.stdout
 
 
 def test_missing_instruction():

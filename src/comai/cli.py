@@ -1,7 +1,6 @@
 import os
 import typer
 import itertools
-from enum import Enum
 from typing import List, Optional, Iterator
 from typing_extensions import Annotated
 

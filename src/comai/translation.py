@@ -19,14 +19,16 @@ def translate_to_command(
     context: context.Context,
 ) -> Iterator[str]:
     openai.api_key = openai_api_key
-    system = f"You are a bot with access to a {context.shell} shell on {context.system} on the user computer. User describes actions, and your output is directly run on the shell, so you just return shell code, with no explanation"
+    system = f"""You are a bot with access to a {context.shell} shell
+        on {context.system} on the user computer.
+        User describes actions, and your output is directly run on the shell,
+        so you just return shell code, with no explanation"""
     system_message = {"role": "system", "content": system}
     new_user_message = adapt_interaction(Query(nl_description))
     prev_messages = [
         adapt_interaction(interaction) for interaction in prev_interactions
     ]
     messages = [system_message, *prev_messages, new_user_message]
-    print(messages)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         max_tokens=200,
