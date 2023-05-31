@@ -7,7 +7,7 @@ from .interactions import Interaction, Query, Command
 def adapt_interaction(interaction: Interaction):
     match interaction:
         case Query(content):
-            return {"role": "user", "content": content}
+            return {"role": "user", "content": f"INSTRUCTION: {content}\n COMMAND:"}
         case Command(content):
             return {"role": "assistant", "content": content}
 
@@ -19,17 +19,17 @@ def translate_to_command(
     context: context.Context,
 ) -> Iterator[str]:
     openai.api_key = openai_api_key
-    system = f"You are a bot translating natural language instructions into commands for {context.shell} in {context.system}. Your output is just an executable command, with no explanation"
+    system = f"You are a bot with access to a {context.shell} shell on {context.system} on the user computer. User describes actions, and your output is directly run on the shell, so you just return shell code, with no explanation"
     system_message = {"role": "system", "content": system}
-    new_user_message = {"role": "user", "content": nl_description}
-    # TODO: maybe nl_description might come embedded in prev_messages
+    new_user_message = adapt_interaction(Query(nl_description))
     prev_messages = [
         adapt_interaction(interaction) for interaction in prev_interactions
     ]
     messages = [system_message, *prev_messages, new_user_message]
+    print(messages)
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        max_tokens=60,
+        max_tokens=200,
         n=1,
         stop=None,
         temperature=0.2,

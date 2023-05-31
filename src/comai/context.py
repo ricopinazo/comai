@@ -24,7 +24,7 @@ def get_context() -> Context:
     if sys.platform == "linux":
         system = "linux"
     elif sys.platform == "darwin":
-        system = "mac"
+        system = "macOS"
 
     shell = os.getenv("SHELL")
     if not shell:
