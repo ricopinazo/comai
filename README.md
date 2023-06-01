@@ -39,8 +39,8 @@ $ comai print a cow saying Moo!
 
 2. Master the intricacies of `git`:
 ```shell
-$ comai update the main branch and merge it into the current
-❯ git checkout main; git pull; git checkout -; git merge main
+$ comai squash the last 3 commits into a single commit
+❯ git rebase -i HEAD~3
 ```
 
 
