@@ -2,6 +2,7 @@ import os
 from typer.testing import CliRunner
 from dotenv import load_dotenv
 from comai import cli, config, translation, context, __version__
+from comai.history import History
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -44,5 +45,9 @@ def test_missing_instruction():
 
 def test_translation():
     ctx = context.get_context()
-    command = translation.translate_to_command("show files", api_key, [], ctx)
+    history = History.create_local()
+    history.append_user_message("show files")
+
+    answer = translation.request_command(history, ctx, api_key)
+    command = translation.filter_assistant_message(answer)
     assert "".join(command) == "ls"

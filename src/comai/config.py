@@ -4,7 +4,6 @@ import configparser
 import typer
 from typing import List
 from cryptography.fernet import Fernet
-from .interactions import Interaction
 
 CONTEXT_SIZE = 20
 APP_NAME = "comai"
@@ -51,19 +50,5 @@ def delete_api_key():
         os.remove(key_path)
 
 
-def save_interaction(interaction: Interaction):
-    if log_path:
-        interactions = get_prev_interactions()
-        interactions.append(interaction)
-        if len(interactions) > CONTEXT_SIZE:
-            interactions = interactions[-CONTEXT_SIZE:]
-        with open(log_path, "bw") as log_file:
-            pickle.dump(interactions, log_file)
-
-
-def get_prev_interactions() -> List[Interaction]:
-    try:
-        with open(log_path, "br") as log_file:
-            return pickle.load(log_file)
-    except Exception:
-        return []
+def get_history_path() -> os.PathLike:
+    return log_path

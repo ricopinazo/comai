@@ -5,7 +5,6 @@ from typing import List, Optional, Iterator
 from typing_extensions import Annotated
 
 from . import config, context, translation, __version__
-from .interactions import Command, Query
 from .menu import get_option_from_menu, MenuOption
 from .animations import (
     query_animation,
@@ -44,25 +43,24 @@ def main_normal_flow(instructions: List[str]):
         assert len(api_key) > 0
         if not translation.validate_api_key(api_key):
             print("API key not valid")
-            typer.Exit(1)
+            exit(1)
         config.save_api_key(api_key)
+
+    hide_cursor()
 
     command_chunks = None
     command = []
     with query_animation():
-        prev_interactions = config.get_prev_interactions()
         ctx = context.get_context()
-        command_chunks = translation.translate_to_command(
-            input_text, api_key, prev_interactions, ctx
+        history_path = config.get_history_path()
+        command_chunks = translation.translate_with_history(
+            input_text, history_path, ctx, api_key
         )
         command_chunks = save_command(command_chunks, command)
         command_chunks = wait_for_first_chunk(command_chunks)
 
     print_answer(command_chunks)
     command = "".join(command)
-
-    config.save_interaction(Query(input_text))
-    config.save_interaction(Command(command))
 
     match get_option_from_menu():
         case MenuOption.run:
@@ -78,7 +76,6 @@ def main(
         Optional[bool], typer.Option("--version", callback=version_callback)
     ] = None,
 ):
-    hide_cursor()
     try:
         main_normal_flow(instructions)
     except Exception as e:
