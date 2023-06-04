@@ -67,8 +67,6 @@ def request_command(
 
     for chunk in response:
         if "content" in chunk.choices[0].delta:
-            with open("/Users/pedrorico/comai_log.txt", "a") as file:
-                file.write(chunk.choices[0].delta.content)
             yield chunk.choices[0].delta.content
 
 
