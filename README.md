@@ -9,7 +9,7 @@
 
 `comai` is an open source terminal assistant powered by OpenAI API that enables you to interact with your command line interface using natural language instructions. It simplifies your workflow by converting natural language queries into executable commands. No more memorizing complex syntax. Just chat with `comai` using plain English!
 
-<img src="demo.gif" alt="demo" width="400"/>
+<img src="demo.gif" alt="demo" width="300"/>
 
 ## Installation 🚀
 
