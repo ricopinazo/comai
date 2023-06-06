@@ -5,6 +5,10 @@ from .context import Context
 from .history import History
 
 
+class CommandMissingException(Exception):
+    pass
+
+
 def validate_api_key(openai_api_key) -> bool:
     try:
         openai.Model.list(api_key=openai_api_key)
@@ -19,12 +23,19 @@ def translate_with_history(
     history: History = History.load_from_file(history_path)
     history.append_user_message(instruction)
 
-    chunks = request_command(history, context, openai_api_key)
     commands_chunks = []
-    for chunk in filter_assistant_message(chunks):
-        # print("from main: ", chunk)
-        yield chunk
-        commands_chunks.append(chunk)
+    chunks = request_command(history, context, openai_api_key)
+    try:
+        for chunk in filter_assistant_message(chunks):
+            yield chunk
+            commands_chunks.append(chunk)
+    except CommandMissingException:
+        corrective_history = history.copy()
+        corrective_history.append_user_message("stick to the format")
+        chunks = request_command(corrective_history, context, openai_api_key)
+        for chunk in filter_assistant_message(chunks):
+            yield chunk
+            commands_chunks.append(chunk)
 
     command = "".join(commands_chunks)
     history.append_assistant_message(command)
@@ -33,15 +44,17 @@ def translate_with_history(
 
 def filter_assistant_message(chunks: Iterator[str]) -> Iterator[str]:
     # Filter all the chunks between COMMAND and END
-    while "COMMAND" not in next(chunks):
-        pass
+    try:
+        while "COMMAND" not in next(chunks):
+            pass
+        first_chunk = next(chunks)
+        yield first_chunk[1:]  # removes the space after "COMMAND"
 
-    first_chunk = next(chunks)
-    yield first_chunk[1:]  # removes the space after "COMMAND"
-
-    while "END" not in (chunk := next(chunks)):
-        # print("re yielding chunk: ", chunk)
-        yield chunk
+        while "END" not in (chunk := next(chunks)):
+            # print("re yielding chunk: ", chunk)
+            yield chunk
+    except StopIteration:
+        raise CommandMissingException
     return
 
 
@@ -72,7 +85,7 @@ def request_command(
 
 def system_prompt_from_context(context: Context) -> str:
     return f"""
-    You are a bot with access to a {context.shell} shell on {context.system}. Your goal is to translate the instruction from the user into a command. 
+    You are a CLI tool called comai  with access to a {context.shell} shell on {context.system}. Your goal is to translate the instruction from the user into a command. 
 
     ALWAYS use the following format, with no additional comments, explanation, or notes before or after AT ALL:
 
