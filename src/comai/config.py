@@ -10,7 +10,7 @@ APP_NAME = "comai"
 config_dir = typer.get_app_dir(APP_NAME, force_posix=True)
 key_path = os.path.join(config_dir, "config.ini")
 temp_dir = tempfile.gettempdir()
-session_id = os.getenv("COMAI_SESSION")
+session_id = os.getenv("TERM_SESSION_ID")
 log_path = None
 try:
     log_path = os.path.join(temp_dir, session_id)
