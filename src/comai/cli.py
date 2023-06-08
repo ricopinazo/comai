@@ -39,7 +39,7 @@ def main_normal_flow(instructions: List[str]):
 
     api_key = config.load_api_key()
     if not api_key:
-        api_key = typer.prompt("Input OpenAI API key")
+        api_key = typer.prompt("Please enter your OpenAI API key")
         assert len(api_key) > 0
         if not translation.validate_api_key(api_key):
             print("API key not valid")

@@ -23,12 +23,12 @@ def test_installation_flow():
 
     result = runner.invoke(cli.app, ["show", "files"], input=f"{api_key}\n\n")
     assert result.exit_code == 0
-    # assert "Input OpenAI API key: " not in result.stdout # FIXME: this should work
+    assert "Please enter your OpenAI API key:" in result.stdout
     assert "ls" in result.stdout
 
     result = runner.invoke(cli.app, ["show", "files"], input="\n")
     assert result.exit_code == 0
-    assert "Input OpenAI API key: " not in result.stdout
+    assert "Please enter your OpenAI API key:" not in result.stdout
     assert "ls" in result.stdout
 
 
