@@ -1,7 +1,7 @@
 import os
-import pickle
 import configparser
 import typer
+import tempfile
 from typing import List
 from cryptography.fernet import Fernet
 
@@ -9,10 +9,11 @@ CONTEXT_SIZE = 20
 APP_NAME = "comai"
 config_dir = typer.get_app_dir(APP_NAME, force_posix=True)
 key_path = os.path.join(config_dir, "config.ini")
+temp_dir = tempfile.gettempdir()
 session_id = os.getenv("COMAI_SESSION")
 log_path = None
 try:
-    log_path = os.path.join(config_dir, session_id)
+    log_path = os.path.join(temp_dir, session_id)
 except Exception:
     pass
 
