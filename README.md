@@ -1,4 +1,4 @@
-# com[ai](github.com/ricopinazo/comai) - the AI powered terminal assistant
+# com[ai](https://github.com/ricopinazo/comai) - the AI powered terminal assistant
 
 [![Tests](https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg)](https://github.com/ricopinazo/comai/actions/workflows/tests.yml)
 [![Latest release](https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases)](https://github.com/ricopinazo/comai/releases)
