@@ -1,15 +1,21 @@
-# com[ai](https://github.com/ricopinazo/comai) - the AI powered terminal assistant
-
-[![Tests](https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg)](https://github.com/ricopinazo/comai/actions/workflows/tests.yml)
-[![Latest release](https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases)](https://github.com/ricopinazo/comai/releases)
-[![PyPI](https://img.shields.io/pypi/v/comai)](https://pypi.org/project/comai/)
-[![Issues](https://img.shields.io/github/issues/ricopinazo/comai?color=brightgreen)](https://github.com/ricopinazo/comai/issues)
-[![License GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](./LICENSE)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+<div align="center">
+  <img src="https://raw.githubusercontent.com/ricopinazo/comai/main/logo.svg" alt="demo" width="200"/>
+  
+  **The AI powered terminal assistant**
+  
+  [![Tests](https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg)](https://github.com/ricopinazo/comai/actions/workflows/tests.yml)
+  [![Latest release](https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases)](https://github.com/ricopinazo/comai/releases)
+  [![PyPI](https://img.shields.io/pypi/v/comai)](https://pypi.org/project/comai/)
+  [![Issues](https://img.shields.io/github/issues/ricopinazo/comai?color=brightgreen)](https://github.com/ricopinazo/comai/issues)
+  [![License GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](./LICENSE)
+  [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+</div>
 
 `comai` is an open source terminal assistant powered by OpenAI API that enables you to interact with your command line interface using natural language instructions. It simplifies your workflow by converting natural language queries into executable commands. No more memorizing complex syntax. Just chat with `comai` using plain English!
 
+<div align="left">
 <img src="https://raw.githubusercontent.com/ricopinazo/comai/main/demo.gif" alt="demo" width="300"/>
+</div>
 
 ## Installation 🚀
 
