@@ -11,10 +11,12 @@
   [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 </div>
 
+## What is comai?
+
 `comai` is an open source terminal assistant powered by OpenAI API that enables you to interact with your command line interface using natural language instructions. It simplifies your workflow by converting natural language queries into executable commands. No more memorizing complex syntax. Just chat with `comai` using plain English!
 
 <div align="left">
-<img src="https://raw.githubusercontent.com/ricopinazo/comai/main/demo.gif" alt="demo" width="300"/>
+<img src="https://raw.githubusercontent.com/ricopinazo/comai/main/demo.gif" alt="demo" width="350"/>
 </div>
 
 ## Installation 🚀
