@@ -38,18 +38,28 @@ Using `comai` is straightforward. Simply invoke the `comai` command followed by 
 
 Let's dive into some exciting examples of how you can harness the power of `comai`:
 
-1. Unleash your creativity with an ASCII art cow:
+1. Manage your system like a pro:
 ```shell
-$ comai print a cow saying Moo!
-❯ cowsay Moo!
+$ comai print my private ip address
+❯ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
+192.168.0.2
+
+$ comai and my public one
+❯ curl ifconfig.me
+92.234.58.146
 ```
 
 2. Master the intricacies of `git`:
 ```shell
 $ comai squash the last 3 commits into a single commit
 ❯ git rebase -i HEAD~3
-```
 
+$ comai show me all the branches having commit c4c0d2d in common
+❯ git branch --contains c4c0d2d
+  chat-api
+  configparser
+* main
+```
 
 3. Check the weather forecast for your location:
 ```shell
@@ -57,15 +67,24 @@ $ comai show me the weather forecast
 ❯ curl wttr.in
 ```
 
-3. Find the annoying process using the port 8000:
+4. Find the annoying process using the port 8080:
 ```shell
-$ comai show me the process using port 8000
-❯ lsof -i :8000
+$ comai show me the process using the port 8080
+❯ lsof -i :8080
+COMMAND   PID      USER   FD   TYPE            DEVICE SIZE/OFF NODE NAME
+node    36350 pedrorico   18u  IPv4 0xe0d28ea918e376b      0t0  TCP *:http-alt (LISTEN)
+
+$ comai show me only the PID
+❯ lsof -t -i :8080
+36350
+
+$ comai kill it
+❯ kill $(lsof -t -i :8080)
 ```
 
-4. Swiftly get rid of all your docker containers:
+5. Swiftly get rid of all your docker containers:
 ```shell
-$ comai stop and remove all running Docker containers
+$ comai stop and remove all running docker containers
 ❯ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
 ```
 
