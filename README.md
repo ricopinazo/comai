@@ -21,13 +21,13 @@
 
 ## Installation 🚀
 
-Getting `comai` up and running is a breeze. You can simply use [`pip`](https://pip.pypa.io/en/stable/) to install the latest tested version:
+Getting `comai` up and running is a breeze. You can simply use [`pip`](https://pip.pypa.io/en/stable/) to install the latest version:
 
 ```shell
 pip install comai
 ```
 
-However, if you usualy work with different python environments, since this python package only contains a script it makes sense to use [`pipx`](https://pypa.github.io/pipx/) instead:
+However, if you usually work with python environments, it is recommended to use [`pipx`](https://pypa.github.io/pipx/) instead:
 
 ```shell
 pipx install comai
