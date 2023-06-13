@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://raw.githubusercontent.com/ricopinazo/comai/main/logo.svg" alt="demo" width="200"/>
+  <img src="https://raw.githubusercontent.com/ricopinazo/comai/main/logo.svg" alt="comai" width="200"/>
   
   **The AI powered terminal assistant**
   
