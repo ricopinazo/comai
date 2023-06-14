@@ -43,3 +43,6 @@ test = [
 
 [tool.hatch.version]
 path = "src/comai/__init__.py"
+
+[tool.mypy]
+ignore_missing_imports = true

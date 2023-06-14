@@ -22,9 +22,9 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def save_command(command_chunks, command: list):
+def save_command(command_chunks, command_backup: list) -> Iterator[str]:
     for chunk in command_chunks:
-        command.append(chunk)
+        command_backup.append(chunk)
         yield chunk
 
 
@@ -48,19 +48,19 @@ def main_normal_flow(instructions: List[str]):
 
     hide_cursor()
 
-    command_chunks = None
-    command = []
+    command_chunks: Iterator[str] = iter(())
+    command_backup: List[str] = []
     with query_animation():
         ctx = context.get_context()
         history_path = config.get_history_path()
         command_chunks = translation.translate_with_history(
             input_text, history_path, ctx, api_key
         )
-        command_chunks = save_command(command_chunks, command)
+        command_chunks = save_command(command_chunks, command_backup)
         command_chunks = wait_for_first_chunk(command_chunks)
 
     print_answer(command_chunks)
-    command = "".join(command)
+    command: str = "".join(command_backup)
 
     match get_option_from_menu():
         case MenuOption.run:

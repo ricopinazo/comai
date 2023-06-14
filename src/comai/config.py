@@ -1,8 +1,9 @@
 import os
 import configparser
+from pathlib import Path
 import typer
 import tempfile
-from typing import List
+from typing import Optional
 from cryptography.fernet import Fernet
 
 CONTEXT_SIZE = 20
@@ -11,11 +12,12 @@ config_dir = typer.get_app_dir(APP_NAME, force_posix=True)
 key_path = os.path.join(config_dir, "config.ini")
 temp_dir = tempfile.gettempdir()
 session_id = os.getenv("TERM_SESSION_ID")
-log_path = None
-try:
-    log_path = os.path.join(temp_dir, session_id)
-except Exception:
-    pass
+log_path: Optional[os.PathLike] = None
+if session_id:
+    try:
+        log_path = Path(os.path.join(temp_dir, session_id))
+    except Exception:
+        pass
 
 encryption_key = b"QUMSqTJ5nape3p8joqkgHFCzyJdyQtqzHk6dCuGl9Nw="
 cipher_suite = Fernet(encryption_key)
@@ -51,5 +53,5 @@ def delete_api_key():
         os.remove(key_path)
 
 
-def get_history_path() -> os.PathLike:
+def get_history_path() -> Optional[os.PathLike]:
     return log_path
