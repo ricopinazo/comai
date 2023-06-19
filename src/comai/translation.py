@@ -1,6 +1,6 @@
 import os
 import openai
-from typing import Iterator
+from typing import Iterator, Optional
 from .context import Context
 from .history import History
 
@@ -18,9 +18,14 @@ def validate_api_key(openai_api_key) -> bool:
 
 
 def translate_with_history(
-    instruction: str, history_path: os.PathLike, context: Context, openai_api_key: str
+    instruction: str,
+    history_path: Optional[os.PathLike],
+    context: Context,
+    openai_api_key: str,
 ) -> Iterator[str]:
-    history: History = History.load_from_file(history_path)
+    history: History = History.create_local()
+    if history_path:
+        history = History.load_from_file(history_path)
     history.append_user_message(instruction)
 
     commands_chunks = []
@@ -47,11 +52,11 @@ def filter_assistant_message(chunks: Iterator[str]) -> Iterator[str]:
     try:
         while "COMMAND" not in next(chunks):
             pass
+
         first_chunk = next(chunks)
         yield first_chunk[1:]  # removes the space after "COMMAND"
 
         while "END" not in (chunk := next(chunks)):
-            # print("re yielding chunk: ", chunk)
             yield chunk
     except StopIteration:
         raise CommandMissingException

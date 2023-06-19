@@ -1,5 +1,4 @@
 import click
-import typer
 from enum import Enum
 from termcolor import colored
 from .animations import show_cursor
@@ -12,7 +11,6 @@ class MenuOption(str, Enum):
 
 def get_option_from_menu() -> MenuOption:
     color = "dark_grey"
-    click_choice = click.Choice(MenuOption)
     execute = colored("r", color, attrs=["underline", "bold"])
     cancel = colored("c", color, attrs=["underline", "bold"])
     prompt = (
@@ -23,12 +21,12 @@ def get_option_from_menu() -> MenuOption:
         + colored("ancel [r]:", color)
     )
     show_cursor()
-    option = typer.prompt(
+    option = click.prompt(
         prompt,
         prompt_suffix="",
+        type=MenuOption,
         default=MenuOption.run,
-        type=click_choice,
-        show_choices=False,
         show_default=False,
+        show_choices=False,
     )
     return option

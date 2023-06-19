@@ -1,7 +1,7 @@
 import sys
 from threading import Event, Thread
 from contextlib import contextmanager
-from typing import Generator
+from typing import Generator, Iterator
 from termcolor import colored
 
 LEFT = "\033[D"
@@ -41,7 +41,7 @@ def query_animation() -> Generator[None, None, None]:
         t.join()
 
 
-def print_answer(command_chunks: str):
+def print_answer(command_chunks: Iterator[str]):
     print(colored(ANSWER_PROMPT, "magenta"), end="", flush=True)
     color = "cyan"
     first_chunk = next(command_chunks)
