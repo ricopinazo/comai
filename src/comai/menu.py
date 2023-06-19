@@ -1,5 +1,4 @@
 import click
-import typer
 from enum import Enum
 from termcolor import colored
 from .animations import show_cursor
@@ -31,12 +30,4 @@ def get_option_from_menu() -> MenuOption:
         show_default=False,
         show_choices=False,
     )
-    # option = typer.prompt(
-    #     prompt,
-    #     prompt_suffix="",
-    #     default=MenuOption.run,
-    #     type=click_choice,
-    #     show_choices=False,
-    #     show_default=False,
-    # )
     return option

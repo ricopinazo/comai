@@ -51,14 +51,12 @@ def filter_assistant_message(chunks: Iterator[str]) -> Iterator[str]:
     # Filter all the chunks between COMMAND and END
     try:
         while "COMMAND" not in (chunk := next(chunks)):
-            print("pref chunk:", chunk)
             pass
         print("yielding first chunk")
         first_chunk = next(chunks)
         yield first_chunk[1:]  # removes the space after "COMMAND"
 
         while "END" not in (chunk := next(chunks)):
-            print("re yielding chunk: ", chunk)
             yield chunk
     except StopIteration:
         raise CommandMissingException
