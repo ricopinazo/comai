@@ -50,9 +50,9 @@ def translate_with_history(
 def filter_assistant_message(chunks: Iterator[str]) -> Iterator[str]:
     # Filter all the chunks between COMMAND and END
     try:
-        while "COMMAND" not in (chunk := next(chunks)):
+        while "COMMAND" not in next(chunks):
             pass
-        print("yielding first chunk")
+
         first_chunk = next(chunks)
         yield first_chunk[1:]  # removes the space after "COMMAND"
 

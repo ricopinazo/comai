@@ -11,7 +11,6 @@ class MenuOption(str, Enum):
 
 def get_option_from_menu() -> MenuOption:
     color = "dark_grey"
-    # click_choice = click.Choice(MenuOption)
     execute = colored("r", color, attrs=["underline", "bold"])
     cancel = colored("c", color, attrs=["underline", "bold"])
     prompt = (
