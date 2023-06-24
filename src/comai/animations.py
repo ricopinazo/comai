@@ -2,16 +2,18 @@ import sys
 from threading import Event, Thread
 from contextlib import contextmanager
 from typing import Generator, Iterator
-from termcolor import colored
+from rich import print
 
 LEFT = "\033[D"
 CLEAR_LINE = "\033[K"
 INITIAL_PROMPT = "🧠≫ "
 LOADED_PROMPT = "✔"
 ANSWER_PROMPT = "❯ "
+ANSWER_PROMPT_COLOR = "magenta"
 CONTACT_PROMPT = "fetching command"
 FRAME_PERIOD = 0.1
 LOADING_FRAMES = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
+COMMAND_COLOR = "cyan"
 
 stdout_is_tty = sys.stdout.isatty()
 
@@ -20,9 +22,8 @@ def print_query_animation(finish: Event):
     next_frame = 0
     while not finish.wait(0):
         sys.stdout.write(f"\r{CLEAR_LINE}")
-        sys.stdout.write(colored(LOADING_FRAMES[next_frame], "cyan"))
-        sys.stdout.write(f" {CONTACT_PROMPT}")
-        sys.stdout.flush()
+        frame = f"[cyan]{LOADING_FRAMES[next_frame]}[/cyan] {CONTACT_PROMPT}"
+        print(frame, end="", flush=True)
         next_frame = (next_frame + 1) % len(LOADING_FRAMES)
         if finish.wait(FRAME_PERIOD):
             break
@@ -42,16 +43,11 @@ def query_animation() -> Generator[None, None, None]:
 
 
 def print_answer(command_chunks: Iterator[str]):
-    print(colored(ANSWER_PROMPT, "magenta"), end="", flush=True)
-    color = "cyan"
+    print(f"[{ANSWER_PROMPT_COLOR}]{ANSWER_PROMPT}", end="", flush=True)
     first_chunk = next(command_chunks)
-    print(colored(first_chunk, color), end="", flush=True)
+    print(f"[{COMMAND_COLOR}]{first_chunk}", end="", flush=True)
     for chunk in command_chunks:
-        print(colored(chunk, color), end="", flush=True)
-
-
-def print_menu() -> None:
-    print("[↩] execute [x↩] cancel")
+        print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
 
 
 def hide_cursor() -> None:

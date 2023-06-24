@@ -20,10 +20,9 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-  "typer==0.9.0",
+  "typer[all]==0.9.0",
   "openai==0.27.5",
   "cryptography==40.0.2",
-  "termcolor==2.3.0",
 ]
 
 [project.urls]

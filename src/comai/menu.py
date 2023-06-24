@@ -1,7 +1,8 @@
 import click
 from enum import Enum
-from termcolor import colored
 from .animations import show_cursor
+from rich import print
+from rich.markup import escape
 
 
 class MenuOption(str, Enum):
@@ -9,20 +10,15 @@ class MenuOption(str, Enum):
     cancel = "c"
 
 
+DEFAULT_OPTION = escape("[r]")
+MENU_PROMPT = f"[bright_black] ➜ [underline bold]r[/underline bold]un | [underline bold]c[/underline bold]ancel {DEFAULT_OPTION}:[/bright_black]"
+
+
 def get_option_from_menu() -> MenuOption:
-    color = "dark_grey"
-    execute = colored("r", color, attrs=["underline", "bold"])
-    cancel = colored("c", color, attrs=["underline", "bold"])
-    prompt = (
-        colored(" ➜ ", color)
-        + execute
-        + colored("un | ", color)
-        + cancel
-        + colored("ancel [r]:", color)
-    )
+    print(MENU_PROMPT, end="", flush=True)
     show_cursor()
     option = click.prompt(
-        prompt,
+        "",
         prompt_suffix="",
         type=MenuOption,
         default=MenuOption.run,
