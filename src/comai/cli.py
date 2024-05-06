@@ -4,13 +4,17 @@ import itertools
 from typing import List, Optional, Iterator
 from typing_extensions import Annotated
 
-from . import config, context, translation, __version__
-from .menu import get_option_from_menu, MenuOption
-from .animations import (
+from comai import config, __version__
+from comai.chain import StreamStart, Token, FinalCommand, query_command
+from comai.settings import load_settings
+from comai.context import get_context
+from comai.menu import get_option_from_menu, MenuOption
+from comai.animations import (
+    print_command_token,
     query_animation,
-    print_answer,
     show_cursor,
     hide_cursor,
+    start_printing_command,
 )
 
 app = typer.Typer()
@@ -22,49 +26,33 @@ def version_callback(value: bool):
         raise typer.Exit()
 
 
-def save_command(command_chunks, command_backup: list) -> Iterator[str]:
-    for chunk in command_chunks:
-        command_backup.append(chunk)
-        yield chunk
-
-
-def wait_for_first_chunk(iterator: Iterator[str]):
-    iter1, iter2 = itertools.tee(iterator)
-    _ = next(iter1)
-    return iter2
-
-
 def main_normal_flow(instructions: List[str]):
+    final_command: str | None = None
     input_text = " ".join(instructions)
-
-    api_key = config.load_api_key()
-    if not api_key:
-        api_key = typer.prompt("Please enter your OpenAI API key")
-        assert len(api_key) > 0
-        if not translation.validate_api_key(api_key):
-            print("API key not valid")
-            exit(1)
-        config.save_api_key(api_key)
 
     hide_cursor()
 
-    command_chunks: Iterator[str] = iter(())
-    command_backup: List[str] = []
+    settings = load_settings()
+    context = get_context()
+    output = query_command(input_text, settings, context)
     with query_animation():
-        ctx = context.get_context()
-        history_path = config.get_history_path()
-        command_chunks = translation.translate_with_history(
-            input_text, history_path, ctx, api_key
-        )
-        command_chunks = save_command(command_chunks, command_backup)
-        command_chunks = wait_for_first_chunk(command_chunks)
+        stream_start = next(output)
+        assert(type(stream_start) == StreamStart)
 
-    print_answer(command_chunks)
-    command: str = "".join(command_backup)
+    start_printing_command()
+    for chunk in output:
+        match chunk:
+            case Token(token):
+                print_command_token(token)
+            case FinalCommand(command):
+                final_command = command
+
+    if final_command is None:
+        raise Exception("failed to fetch command")
 
     match get_option_from_menu():
         case MenuOption.run:
-            os.system(command)
+            os.system(final_command)
         case MenuOption.cancel:
             pass
 

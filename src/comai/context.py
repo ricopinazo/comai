@@ -2,6 +2,8 @@ import os
 import sys
 from dataclasses import dataclass
 
+session_id = os.getenv("TERM_SESSION_ID")
+
 shell = os.getenv("SHELL")
 if not shell:
     shell = "bash"
@@ -17,6 +19,7 @@ elif sys.platform == "darwin":
 class Context:
     system: str
     shell: str
+    session_id: str | None
 
 
 def get_context() -> Context:
@@ -31,4 +34,4 @@ def get_context() -> Context:
         shell = "bash"
     shell = shell.split("/")[-1]
 
-    return Context(system, shell)
+    return Context(system, shell, session_id)

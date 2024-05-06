@@ -4,3 +4,4 @@ __pycache__
 dist
 .env
 .DS_Store
+.ipynb_checkpoints
