@@ -37,7 +37,7 @@ def main_normal_flow(instructions: List[str]):
     output = query_command(input_text, settings, context)
     with query_animation():
         stream_start = next(output)
-        assert(type(stream_start) == StreamStart)
+        assert type(stream_start) == StreamStart
 
     start_printing_command()
     for chunk in output:

@@ -49,8 +49,10 @@ def query_animation() -> Generator[None, None, None]:
 #     for chunk in command_chunks:
 #         print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
 
+
 def start_printing_command():
     print(f"[{ANSWER_PROMPT_COLOR}]{ANSWER_PROMPT}", end="", flush=True)
+
 
 def print_command_token(chunk: str):
     print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
