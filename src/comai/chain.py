@@ -87,7 +87,7 @@ def attatch_history(
 
 def create_chain_stream(settings: Settings, context: Context):
     prompt = create_prompt(context)
-    model = ChatOllama(model=settings.model)
+    model = ChatOllama(model=settings.model, temperature=0)
     base_chain = prompt | model
 
     if context.session_id is not None:
