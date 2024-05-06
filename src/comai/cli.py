@@ -4,7 +4,7 @@ import itertools
 from typing import List, Optional, Iterator
 from typing_extensions import Annotated
 
-from comai import config, __version__
+from comai import __version__
 from comai.chain import StreamStart, Token, FinalCommand, query_command
 from comai.settings import load_settings
 from comai.context import get_context
