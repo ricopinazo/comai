@@ -1,6 +1,6 @@
 name: tests
 
-on: 
+on:
   push:
   workflow_call:
     secrets:
@@ -40,6 +40,6 @@ jobs:
       - name: Install black
         run: python -m pip install black=="23.*" mypy=="1.*"
       - name: Check style
-        run: black --check .
+        run: black --check --diff .
       - name: chek types
         run: mypy .
