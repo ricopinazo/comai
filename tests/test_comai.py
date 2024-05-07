@@ -1,16 +1,9 @@
-import os
 from typer.testing import CliRunner
 
-from langchain_core.messages import AIMessage, AIMessageChunk
+from langchain_core.messages import AIMessageChunk
 from langchain_community.chat_models import ChatOllama
 
-# from dotenv import load_dotenv
-from comai import cli, context, __version__
-
-# from comai.history import History
-
-# load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+from comai import cli, __version__
 
 runner = CliRunner()
 
