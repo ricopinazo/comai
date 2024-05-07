@@ -42,14 +42,6 @@ def query_animation() -> Generator[None, None, None]:
         t.join()
 
 
-# def print_answer(command_chunks: Iterator[str]):
-#     print(f"[{ANSWER_PROMPT_COLOR}]{ANSWER_PROMPT}", end="", flush=True)
-#     first_chunk = next(command_chunks)
-#     print(f"[{COMMAND_COLOR}]{first_chunk}", end="", flush=True)
-#     for chunk in command_chunks:
-#         print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
-
-
 def start_printing_command():
     print(f"[{ANSWER_PROMPT_COLOR}]{ANSWER_PROMPT}", end="", flush=True)
 
