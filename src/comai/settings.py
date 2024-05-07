@@ -10,9 +10,8 @@ settings_path = os.path.join(config_dir, "settings.json")
 
 class Settings(BaseModel):
     provider: Literal["ollama", "openai"]
-    model: str = (
-        "llama3"  # TODO: improve this, should be typed per provider, although possible models can be queried at runtime
-    )
+    # TODO: improve this, should be typed per provider, although possible models can be queried at runtime
+    model: str = "llama3"
 
 
 DEFAULT_SETTINGS: Settings = Settings(provider="ollama", model="llama3")
