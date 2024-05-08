@@ -126,7 +126,7 @@ def query_command(
     query: str, settings: Settings, context: Context
 ) -> Iterator[StreamStart | Token | FinalCommand]:
     stream = create_chain_stream(settings, context)
-    output = stream({"question": "print your name"})
+    output = stream({"question": query})
 
     started = False
     buffer = ""

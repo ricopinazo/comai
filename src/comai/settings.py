@@ -12,9 +12,10 @@ class Settings(BaseModel):
     provider: Literal["ollama", "openai"]
     # TODO: improve this, should be typed per provider, although possible models can be queried at runtime
     model: str = "llama3"
+    verbose: bool = True
 
 
-DEFAULT_SETTINGS: Settings = Settings(provider="ollama", model="llama3")
+DEFAULT_SETTINGS: Settings = Settings(provider="ollama")
 
 
 def load_settings() -> Settings:
@@ -23,3 +24,9 @@ def load_settings() -> Settings:
     except:
         # TODO: if there is indeed a file but the file is incorrect, we should complain instead of returning the default
         return DEFAULT_SETTINGS
+
+
+def write_settings(settings: Settings):
+    json = settings.model_dump_json(indent=2)
+    with open(settings_path, "w") as file:
+        file.write(json + "\n")

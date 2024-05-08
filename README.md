@@ -1,16 +1,17 @@
 <div align="center">
   <img src="https://raw.githubusercontent.com/ricopinazo/comai/main/logo.svg" alt="comai" width="200"/>
-  
-  **The AI powered terminal assistant**
-  
-  [![Tests](https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg)](https://github.com/ricopinazo/comai/actions/workflows/tests.yml)
-  [![Latest release](https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases)](https://github.com/ricopinazo/comai/releases)
-  [![PyPI](https://img.shields.io/pypi/v/comai)](https://pypi.org/project/comai/)
-  [![Issues](https://img.shields.io/github/issues/ricopinazo/comai?color=brightgreen)](https://github.com/ricopinazo/comai/issues)
-  [![PyPI - Downloads](https://img.shields.io/pypi/dm/comai)](https://pypi.org/project/comai/)
-  [![License GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](./LICENSE)
-  [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-  [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+
+**The AI powered terminal assistant**
+
+[![Tests](https://github.com/ricopinazo/comai/actions/workflows/tests.yml/badge.svg)](https://github.com/ricopinazo/comai/actions/workflows/tests.yml)
+[![Latest release](https://img.shields.io/github/v/release/ricopinazo/comai?color=brightgreen&include_prereleases)](https://github.com/ricopinazo/comai/releases)
+[![PyPI](https://img.shields.io/pypi/v/comai)](https://pypi.org/project/comai/)
+[![Issues](https://img.shields.io/github/issues/ricopinazo/comai?color=brightgreen)](https://github.com/ricopinazo/comai/issues)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/comai)](https://pypi.org/project/comai/)
+[![License GPLv3](https://img.shields.io/badge/license-GPLv3-blue.svg)](./LICENSE)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+
 </div>
 
 ## What is comai? 🎯
@@ -35,9 +36,22 @@ However, if you usually work with python environments, it is recommended to use 
 pipx install comai
 ```
 
-The first time you run it, it'll ask you for an OpenAI API key. You can create a developer account [here](https://platform.openai.com/overview). Once in your account, go to `API Keys` section and `Create new secret key`. We recommend setting a usage limit under `Billing`/`Usage limits`.
+By default, `comai` is setup to use ollama under the hood, which allows you to host any popular open source LLM locally. If you are happy with this, make sure to install and have ollama running. You can find the install instructions [here](https://ollama.com/download)
+
+Once it is installed, make sure to download the `llama3` model, since comai has been optimised for it
+
+```shell
+ollama pull llama3
+```
+
+Otherwise, you can set up any other model available in the ollama service via:
+
+```shell
+comai --config
+```
 
 > **_NOTE:_** `comai` uses the environment variable `TERM_SESSION_ID` to maintain context between calls so you don't need to repeat yourself giving instructions to it. You can check if it is available in your default terminal checking the output of `echo $TERM_SESSION_ID`, which should return some type of UUID. If the output is empty, you can simply add the following to your `.zshrc`/`.bashrc` file:
+>
 > ```shell
 > export TERM_SESSION_ID=$(uuidgen)
 > ```
@@ -49,6 +63,7 @@ Using `comai` is straightforward. Simply invoke the `comai` command followed by 
 Let's dive into some exciting examples of how you can harness the power of `comai`:
 
 1. Manage your system like a pro:
+
 ```shell
 $ comai print my private ip address
 ❯ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
@@ -60,6 +75,7 @@ $ comai and my public one
 ```
 
 2. Master the intricacies of `git`:
+
 ```shell
 $ comai squash the last 3 commits into a single commit
 ❯ git rebase -i HEAD~3
@@ -72,12 +88,14 @@ $ comai show me all the branches having commit c4c0d2d in common
 ```
 
 3. Check the weather forecast for your location:
+
 ```shell
 $ comai show me the weather forecast
 ❯ curl wttr.in
 ```
 
 4. Find the annoying process using the port 8080:
+
 ```shell
 $ comai show me the process using the port 8080
 ❯ lsof -i :8080
@@ -93,6 +111,7 @@ $ comai kill it
 ```
 
 5. Swiftly get rid of all your docker containers:
+
 ```shell
 $ comai stop and remove all running docker containers
 ❯ docker stop $(docker ps -aq) && docker rm $(docker ps -aq)
@@ -108,19 +127,11 @@ If you're interested in joining the development of new features for `comai`, her
 2. Install the package in editable mode by running `pip install -e .`.
 3. Run the tests using `pytest`. Make sure you have the `OPENAI_API_KEY` environment variable set up with your OpenAI API key. Alternatively, you can create a file named `.env` and define the variable there.
 
-
 This project utilizes black for code formatting. To ensure your changes adhere to this format, simply follow these steps:
 
 ```shell
 pip install black
 black .
-```
-
-For users of VS Code, you can configure the following options after installing `black`:
-
-```json
-"editor.formatOnSave": true,
-"python.formatting.provider": "black"
 ```
 
 ## License 📜
