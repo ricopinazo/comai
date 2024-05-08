@@ -24,7 +24,7 @@
 
 ## Installation 🚀
 
-`comai` is available python package. We recommend using [`pipx`](https://pypa.github.io/pipx/):
+`comai` is available as a python package. We recommend using [`pipx`](https://pypa.github.io/pipx/):
 
 ```shell
 pipx install comai
