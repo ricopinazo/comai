@@ -30,7 +30,7 @@ Getting `comai` up and running is a breeze. You just need to install the python 
 pipx install comai
 ```
 
-By default, `comai` is setup to use ollama under the hood, which allows you to host any popular open source LLM locally. If you are happy with this, make sure to install and have ollama running. You can find the install instructions [here](https://ollama.com/download).
+By default, `comai` is setup to use [ollama](https://ollama.com) under the hood, which allows you to host any popular open source LLM locally. If you are happy with this, make sure to install and have ollama running. You can find the install instructions [here](https://ollama.com/download).
 
 Once it is installed, make sure to download the `llama3` model, since comai has been optimised for it
 
