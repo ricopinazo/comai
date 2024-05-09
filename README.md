@@ -75,17 +75,10 @@ $ comai squash the last 3 commits into a single commit
 ❯ git rebase -i HEAD~3
 
 $ comai show me all the branches having commit c4c0d2d in common
-❯ git branch --contains c4c0d2d
-  chat-api
-  configparser
+❯ git branch -a --contains c4c0d2d
+  fix/terrible-bug
+  awesome-feature
 * main
-```
-
-3. Check the weather forecast for your location:
-
-```shell
-$ comai show me the weather forecast
-❯ curl wttr.in
 ```
 
 4. Find the annoying process using the port 8080:
@@ -96,12 +89,8 @@ $ comai show me the process using the port 8080
 COMMAND   PID      USER   FD   TYPE            DEVICE SIZE/OFF NODE NAME
 node    36350 pedrorico   18u  IPv4 0xe0d28ea918e376b      0t0  TCP *:http-alt (LISTEN)
 
-$ comai show me only the PID
-❯ lsof -t -i :8080
-36350
-
 $ comai kill it
-❯ kill $(lsof -t -i :8080)
+❯ kill `lsof -i :8080 | awk '{print $2}'`
 ```
 
 5. Get rid of all your docker containers:
