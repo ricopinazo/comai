@@ -50,7 +50,7 @@ comai --config
 > export TERM_SESSION_ID=$(uuidgen)
 > ```
 
-## Usage Examples 🎉
+## Usage examples 🎉
 
 Using `comai` is straightforward. Simply invoke the `comai` command followed by your natural language instruction. `comai` will provide you with the corresponding executable command, which you can execute by pressing Enter or ignore by pressing any other key.
 
