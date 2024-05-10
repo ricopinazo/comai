@@ -57,28 +57,22 @@ Using `comai` is straightforward. Simply invoke the `comai` command followed by 
 Let's dive into some exciting examples of how you can harness the power of `comai`:
 
 1. Access network details:
-
-```shell
-$ comai print my private ip address
-❯ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
-192.168.0.2
-
-$ comai and my public one
-❯ curl ifconfig.me
+$ comai print my public ip address
+❯ curl -s4 ifconfig.co
 92.234.58.146
 ```
 
 2. Manage `git` like a pro:
 
 ```shell
-$ comai squash the last 3 commits into a single commit
-❯ git rebase -i HEAD~3
+$ comai rename the current branch to awesome-branch
+❯ git branch -m $(git rev-parse --abbrev-ref HEAD) awesome-feature
 
 $ comai show me all the branches having commit c4c0d2d in common
 ❯ git branch -a --contains c4c0d2d
+  main
   fix/terrible-bug
-  awesome-feature
-* main
+* awesome-feature
 ```
 
 4. Find the annoying process using the port 8080:
