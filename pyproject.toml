@@ -23,6 +23,7 @@ dependencies = [
     "langchain==0.1.17",
     "langchain-openai==0.1.6",
     "ollama==0.1.9",
+    "types-requests==2.31.0.20240406",
 ]
 
 [project.urls]
