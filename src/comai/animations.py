@@ -3,6 +3,10 @@ from threading import Event, Thread
 from contextlib import contextmanager
 from typing import Generator, Iterator
 from rich import print
+from prompt_toolkit import prompt
+from prompt_toolkit.styles import Style
+
+from comai.prompt import prompt_str
 
 LEFT = "\033[D"
 CLEAR_LINE = "\033[K"
@@ -48,6 +52,24 @@ def start_printing_command():
 
 def print_command_token(chunk: str):
     print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
+
+
+def print_command_prompt(command: str):
+    # print(CLEAR_LINE, end="", flush=True)
+    sys.stdout.write(f"\r{CLEAR_LINE}")
+    style = Style.from_dict(
+        {
+            # User input (default text)
+            "": "ansicyan",
+            "mark": "ansimagenta",
+            # "question": "ansiwhite",
+        }
+    )
+    message = [
+        ("class:mark", ANSWER_PROMPT),
+    ]
+    # return "ls"
+    return prompt(message, default="%s" % command, style=style)
 
 
 def hide_cursor() -> None:

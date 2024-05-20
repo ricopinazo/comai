@@ -1,4 +1,5 @@
 import os
+import sys
 from typing import Literal
 import typer
 from pydantic import BaseModel
@@ -10,20 +11,27 @@ settings_path = os.path.join(config_dir, "settings.json")
 
 class Settings(BaseModel):
     provider: Literal["ollama", "openai"]
-    # TODO: improve this, should be typed per provider, although possible models can be queried at runtime
     model: str = "llama3"
-    verbose: bool = True
 
 
 DEFAULT_SETTINGS: Settings = Settings(provider="ollama")
 
 
+class InvalidSettingsFileException(BaseException):
+    def __init__(self, settings_path: str):
+        self.settings_path = settings_path
+        super().__init__()
+
+
 def load_settings() -> Settings:
     try:
-        return Settings.parse_file(settings_path)
-    except:
-        # TODO: if there is indeed a file but the file is incorrect, we should complain instead of returning the default
+        with open(settings_path, "r") as file:
+            content = file.read()
+            return Settings.model_validate_json(content)
+    except FileNotFoundError:
         return DEFAULT_SETTINGS
+    except Exception:
+        raise InvalidSettingsFileException(settings_path=settings_path)
 
 
 def write_settings(settings: Settings):
