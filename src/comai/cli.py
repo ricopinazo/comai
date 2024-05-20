@@ -3,7 +3,7 @@ import sys
 import typer
 import click
 import itertools
-from typing import List, Optional, Iterator
+from typing import List, Optional, Iterator, Literal
 from typing_extensions import Annotated
 from langchain_community.llms.ollama import OllamaEndpointNotFoundError
 from urllib3.exceptions import NewConnectionError
@@ -76,10 +76,8 @@ def settings_callback(value: bool):
         else:
             raise Exception("No models available for the selected provider")
         model = prompt_options("Which model do you want to use?", models, default_model)
-
-        settings.provider = provider
-        settings.model = model
-        write_settings(settings)
+        updated_settings = Settings.parse_obj({"provider": provider, "model": model})
+        write_settings(updated_settings)
         raise typer.Exit()
 
 
