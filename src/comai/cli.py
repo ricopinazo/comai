@@ -12,6 +12,7 @@ from requests.exceptions import ConnectionError
 from comai import __version__
 from comai.chain import StreamStart, Token, FinalCommand, query_command
 from comai.ollama import get_ollama_model_names
+from comai.openai import get_openai_model_names
 from comai.prompt import prompt_bool, prompt_options
 from comai.settings import (
     InvalidSettingsFileException,
@@ -51,19 +52,32 @@ def show_settings_callback(value: bool):
 def settings_callback(value: bool):
     if value:
         settings = load_settings()
-        ollama_models = get_ollama_model_names()
-        if settings.model in ollama_models:
-            default_model = settings.model
-        elif "llama3" in ollama_models:
-            default_model = "llama3"
-        elif len(ollama_models) > 0:
-            default_model = ollama_models[0]
-        else:
-            default_model = "llama3"
-        model = prompt_options(
-            "Which model do you want to use?", ollama_models, default_model
+
+        provider = prompt_options(
+            "Which provider do you want to use?",
+            ["ollama", "openai"],
+            settings.provider,
         )
-        settings.provider = "ollama"
+        if provider == "ollama":
+            models = get_ollama_model_names()
+        elif provider == "openai":
+            models = get_openai_model_names()
+        else:
+            raise Exception(f"Got unknown provider option: {provider}")
+
+        if settings.model in models:
+            default_model = settings.model
+        elif "llama3" in models:
+            default_model = "llama3"
+        elif "gpt-3.5-turbo" in models:
+            default_model = "gpt-3.5-turbo"
+        elif len(models) > 0:
+            default_model = models[0]
+        else:
+            raise Exception("No models available for the selected provider")
+        model = prompt_options("Which model do you want to use?", models, default_model)
+
+        settings.provider = provider
         settings.model = model
         write_settings(settings)
         raise typer.Exit()

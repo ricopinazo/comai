@@ -1,6 +1,7 @@
 import itertools
 import logging
 import re
+import os
 import textwrap
 import uuid
 from dataclasses import dataclass
@@ -19,6 +20,7 @@ from langchain_core.runnables.history import (
 )
 from langchain_core.runnables.utils import ConfigurableFieldSpec
 from langchain_core.tools import tool
+from langchain_openai import ChatOpenAI
 
 from comai.context import Context
 from comai.history import load_history
@@ -87,7 +89,13 @@ def attatch_history(
 
 def create_chain_stream(settings: Settings, context: Context):
     prompt = create_prompt(context)
-    model = ChatOllama(model=settings.model, temperature=0)
+    if settings.provider == "ollama":
+        model = ChatOllama(model=settings.model, temperature=0)
+    elif settings.provider == "openai":
+        default_key = os.environ.get("OPENAI_API_KEY")
+        comai_key = os.environ.get("COMAI_OPENAI_API_KEY")
+        api_key = comai_key if comai_key is not None else default_key
+        model = ChatOpenAI(model=settings.model, temperature=0, api_key=api_key)
     base_chain = prompt | model
 
     if context.session_id is not None:
