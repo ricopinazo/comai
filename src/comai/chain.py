@@ -6,6 +6,7 @@ import textwrap
 import uuid
 from dataclasses import dataclass
 from typing import Iterable, Iterator, List
+from pydantic import BaseModel, SecretStr
 
 from langchain.globals import set_debug, set_verbose
 from langchain_community.chat_message_histories import SQLChatMessageHistory
@@ -87,15 +88,27 @@ def attatch_history(
     )
 
 
+class OpenaiSecrets(BaseModel):
+    default_key: SecretStr | None
+    comai_key: SecretStr | None
+
+
+def extract_secret(key: str | None):
+    if key is None:
+        return None
+    else:
+        return SecretStr(key)
+
+
 def create_chain_stream(settings: Settings, context: Context):
     prompt = create_prompt(context)
     if settings.provider == "ollama":
         model = ChatOllama(model=settings.model, temperature=0)
     elif settings.provider == "openai":
-        default_key = os.environ.get("OPENAI_API_KEY")
-        comai_key = os.environ.get("COMAI_OPENAI_API_KEY")
+        default_key = extract_secret(os.environ.get("OPENAI_API_KEY"))
+        comai_key = extract_secret(os.environ.get("COMAI_OPENAI_API_KEY"))
         api_key = comai_key if comai_key is not None else default_key
-        model = ChatOpenAI(model=settings.model, temperature=0, api_key=api_key)
+        model = ChatOpenAI(model=settings.model, temperature=0, api_key=api_key)  # type: ignore
     base_chain = prompt | model
 
     if context.session_id is not None:

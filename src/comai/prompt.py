@@ -18,7 +18,7 @@ def prompt_str(question: str, default: str) -> str:
         ("class:mark", "? "),
         ("class:question", f"{question.strip()} "),
     ]
-    return prompt(message, default="%s" % default, style=style)
+    return prompt(message, default="%s" % default, style=style)  # type: ignore
 
 
 def prompt_options(question: str, options: list[str], default: str) -> str:

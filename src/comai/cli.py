@@ -21,7 +21,6 @@ from comai.settings import (
     Settings,
 )
 from comai.context import get_context
-from comai.menu import get_option_from_menu, MenuOption
 from comai.animations import (
     print_command_token,
     query_animation,
@@ -31,7 +30,9 @@ from comai.animations import (
     print_command_prompt,
 )
 
-typer.core.rich = None  # this is to avoid using right for the help panel
+# this is to avoid using right for the help panel
+typer.core.rich = None  # type: ignore
+
 app = typer.Typer(pretty_exceptions_enable=False, add_completion=False)
 
 

@@ -23,7 +23,6 @@ dependencies = [
     "langchain==0.1.17",
     "langchain-openai==0.1.6",
     "ollama==0.1.9",
-    "types-requests==2.31.0.20240406",
 ]
 
 [project.urls]
@@ -35,7 +34,13 @@ issues = "https://github.com/ricopinazo/comai/issues"
 comai = "comai.cli:app"
 
 [project.optional-dependencies]
-test = ["pytest", "hatchling"]
+test = [
+    "pytest",
+    "hatchling",
+    "types-requests==2.31.0.20240406",
+    "mypy==1.9.0",
+    "black==24.4.0",
+]
 
 [tool.hatch.version]
 path = "src/comai/__init__.py"

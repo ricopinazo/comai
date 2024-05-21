@@ -68,8 +68,7 @@ def print_command_prompt(command: str):
     message = [
         ("class:mark", ANSWER_PROMPT),
     ]
-    # return "ls"
-    return prompt(message, default="%s" % command, style=style)
+    return prompt(message, default="%s" % command, style=style)  # type: ignore
 
 
 def hide_cursor() -> None:
