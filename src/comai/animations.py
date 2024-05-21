@@ -3,7 +3,7 @@ from threading import Event, Thread
 from contextlib import contextmanager
 from typing import Generator, Iterator
 from rich import print
-from prompt_toolkit import prompt
+import prompt_toolkit
 from prompt_toolkit.styles import Style
 
 from comai.prompt import prompt_str
@@ -68,7 +68,7 @@ def print_command_prompt(command: str):
     message = [
         ("class:mark", ANSWER_PROMPT),
     ]
-    return prompt(message, default="%s" % command, style=style)  # type: ignore
+    return prompt_toolkit.prompt(message, default="%s" % command, style=style)  # type: ignore
 
 
 def hide_cursor() -> None:

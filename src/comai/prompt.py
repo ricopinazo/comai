@@ -1,7 +1,7 @@
 from typing import Literal
 from simple_term_menu import TerminalMenu
 from rich import print
-from prompt_toolkit import prompt
+import prompt_toolkit
 from prompt_toolkit.styles import Style
 
 
@@ -18,7 +18,7 @@ def prompt_str(question: str, default: str) -> str:
         ("class:mark", "? "),
         ("class:question", f"{question.strip()} "),
     ]
-    return prompt(message, default="%s" % default, style=style)  # type: ignore
+    return prompt_toolkit.prompt(message, default="%s" % default, style=style)  # type: ignore
 
 
 def prompt_options(question: str, options: list[str], default: str) -> str:
