@@ -68,13 +68,13 @@ $ comai print my public ip address
 
 ```shell
 $ comai rename the current branch to awesome-branch
-❯ git branch -m $(git rev-parse --abbrev-ref HEAD) awesome-feature
+❯ git branch -m $(git rev-parse --abbrev-ref HEAD) awesome-branch
 
 $ comai show me all the branches having commit c4c0d2d in common
 ❯ git branch -a --contains c4c0d2d
   main
   fix/terrible-bug
-* awesome-feature
+* awesome-branch
 ```
 
 3. Find the annoying process using the port 8080:
