@@ -19,7 +19,7 @@
 `comai` is an open source CLI utility that translates natural language instructions into executable commands.
 
 <div align="left">
-<img src="https://raw.githubusercontent.com/ricopinazo/comai/main/demo.gif" alt="demo" width="350"/>
+<img src="https://github.com/ricopinazo/comai/blob/cf4cb8022d9230094216d82c31d8e34429137adf/demo.gif" alt="demo" width="350"/>
 </div>
 
 ## Installation 🚀
