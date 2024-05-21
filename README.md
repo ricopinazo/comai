@@ -57,6 +57,8 @@ Using `comai` is straightforward. Simply invoke the `comai` command followed by 
 Let's dive into some exciting examples of how you can harness the power of `comai`:
 
 1. Access network details:
+
+```
 $ comai print my public ip address
 ❯ curl -s4 ifconfig.co
 92.234.58.146
@@ -75,7 +77,7 @@ $ comai show me all the branches having commit c4c0d2d in common
 * awesome-feature
 ```
 
-4. Find the annoying process using the port 8080:
+3. Find the annoying process using the port 8080:
 
 ```shell
 $ comai show me the process using the port 8080
@@ -87,7 +89,7 @@ $ comai kill it
 ❯ kill `lsof -i :8080 | awk '{print $2}'`
 ```
 
-5. Get rid of all your docker containers:
+4. Get rid of all your docker containers:
 
 ```shell
 $ comai stop and remove all running docker containers
