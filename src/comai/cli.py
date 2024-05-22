@@ -30,7 +30,7 @@ from comai.animations import (
     print_command_prompt,
 )
 
-# this is to avoid using right for the help panel
+# this is to avoid using rich for the help panel
 typer.core.rich = None  # type: ignore
 
 app = typer.Typer(pretty_exceptions_enable=False, add_completion=False)
@@ -108,12 +108,6 @@ def main_normal_flow(instructions: List[str], settings: Settings):
 
     user_command = print_command_prompt(final_command)
     os.system(user_command)
-
-    # match get_option_from_menu(settings):
-    #     case MenuOption.run:
-    #         os.system(final_command)
-    #     case MenuOption.cancel:
-    #         pass
 
 
 @app.command(help="Translates natural language instructions into commands")

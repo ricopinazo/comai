@@ -55,14 +55,12 @@ def print_command_token(chunk: str):
 
 
 def print_command_prompt(command: str):
-    # print(CLEAR_LINE, end="", flush=True)
     sys.stdout.write(f"\r{CLEAR_LINE}")
     style = Style.from_dict(
         {
             # User input (default text)
             "": "ansicyan",
             "mark": "ansimagenta",
-            # "question": "ansiwhite",
         }
     )
     message = [
