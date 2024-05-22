@@ -1,34 +1,28 @@
-import os
+import prompt_toolkit
+from typing import Any
 from typer.testing import CliRunner
-from dotenv import load_dotenv
-from comai import cli, config, translation, context, __version__
-from comai.history import History
 
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
+from langchain_core.messages import AIMessageChunk
+from langchain_community.chat_models import ChatOllama
+
+from comai import cli, __version__
 
 runner = CliRunner()
 
 
-def test_invalid_api_key():
-    config.delete_api_key()
+def test_normal_flow(monkeypatch):
+    def mock_stream(*args, **kwargs):
+        for token in ["COMMAND", " ls", " END"]:
+            yield AIMessageChunk(content=token)
 
-    result = runner.invoke(cli.app, ["show", "files"], input="bad-api-key\n")
-    assert result.exit_code != 0
-    assert "API key not valid" in result.stdout
+    def mock_prompt(message: str, default: str, style: Any = None):
+        return default
 
+    monkeypatch.setattr(ChatOllama, "stream", mock_stream)
+    monkeypatch.setattr(prompt_toolkit, "prompt", mock_prompt)
 
-def test_installation_flow():
-    config.delete_api_key()
-
-    result = runner.invoke(cli.app, ["show", "files"], input=f"{api_key}\n\n")
+    result = runner.invoke(cli.app, ["show", "files"])
     assert result.exit_code == 0
-    assert "Please enter your OpenAI API key:" in result.stdout
-    assert "ls" in result.stdout
-
-    result = runner.invoke(cli.app, ["show", "files"], input="\n")
-    assert result.exit_code == 0
-    assert "Please enter your OpenAI API key:" not in result.stdout
     assert "ls" in result.stdout
 
 
@@ -41,13 +35,3 @@ def test_version():
 def test_missing_instruction():
     result = runner.invoke(cli.app, [])
     assert result.exit_code != 0
-
-
-def test_translation():
-    ctx = context.get_context()
-    history = History.create_local()
-    history.append_user_message("show files")
-
-    answer = translation.request_command(history, ctx, api_key)
-    command = translation.filter_assistant_message(answer)
-    assert "".join(command) == "ls"

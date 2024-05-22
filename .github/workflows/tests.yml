@@ -1,11 +1,8 @@
 name: tests
 
-on: 
+on:
   push:
   workflow_call:
-    secrets:
-      OPENAI_API_KEY:
-        required: true
 
 jobs:
   test:
@@ -22,24 +19,10 @@ jobs:
         with:
           python-version: "3.x"
       - name: Install dependencies
-        run: python -m pip install -e .[test]
-      - name: Set environment variable using secret
-        run: echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" >> $GITHUB_ENV
-      - name: Run test suite
-        run: pytest -v
-  code-checks:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.x"
-      - name: Install black
-        run: python -m pip install black=="23.*" mypy=="1.*"
+        run: python -m pip install -e .[dev]
       - name: Check style
-        run: black --check .
+        run: black --check --diff .
       - name: chek types
         run: mypy .
+      - name: Run test suite
+        run: pytest -v

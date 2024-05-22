@@ -3,6 +3,10 @@ from threading import Event, Thread
 from contextlib import contextmanager
 from typing import Generator, Iterator
 from rich import print
+import prompt_toolkit
+from prompt_toolkit.styles import Style
+
+from comai.prompt import prompt_str
 
 LEFT = "\033[D"
 CLEAR_LINE = "\033[K"
@@ -42,12 +46,27 @@ def query_animation() -> Generator[None, None, None]:
         t.join()
 
 
-def print_answer(command_chunks: Iterator[str]):
+def start_printing_command():
     print(f"[{ANSWER_PROMPT_COLOR}]{ANSWER_PROMPT}", end="", flush=True)
-    first_chunk = next(command_chunks)
-    print(f"[{COMMAND_COLOR}]{first_chunk}", end="", flush=True)
-    for chunk in command_chunks:
-        print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
+
+
+def print_command_token(chunk: str):
+    print(f"[{COMMAND_COLOR}]{chunk}", end="", flush=True)
+
+
+def print_command_prompt(command: str):
+    sys.stdout.write(f"\r{CLEAR_LINE}")
+    style = Style.from_dict(
+        {
+            # User input (default text)
+            "": "ansicyan",
+            "mark": "ansimagenta",
+        }
+    )
+    message = [
+        ("class:mark", ANSWER_PROMPT),
+    ]
+    return prompt_toolkit.prompt(message, default="%s" % command, style=style)  # type: ignore
 
 
 def hide_cursor() -> None:

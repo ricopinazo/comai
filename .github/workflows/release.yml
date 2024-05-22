@@ -1,25 +1,23 @@
 name: Release new version
 
-on: 
+on:
   workflow_dispatch:
     inputs:
       type:
-        description: 'Release type'
+        description: "Release type"
         required: true
-        default: 'preview'
+        default: "preview"
         type: choice
         options:
-        - major
-        - minor
-        - fix
-        - preview
-        - release
+          - fix
+          - minor
+          - minor,preview
+          - major,preview
+          - release
 
 jobs:
   test:
     uses: ./.github/workflows/tests.yml
-    secrets:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
   release:
     needs: test
     runs-on: ubuntu-latest

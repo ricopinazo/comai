@@ -5,12 +5,10 @@ build-backend = "hatchling.build"
 [project]
 name = "comai"
 dynamic = ["version"]
-authors = [
-  { name="Pedro Rico", email="ricopinazo@gmail.com" },
-]
+authors = [{ name = "Pedro Rico", email = "ricopinazo@gmail.com" }]
 description = "AI powered console assistant"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = { file = "LICENSE" }
 requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -20,9 +18,13 @@ classifiers = [
     "Operating System :: Unix",
 ]
 dependencies = [
-  "typer[all]==0.9.0",
-  "openai==0.27.5",
-  "cryptography==40.0.2",
+    "typer-slim==0.12.3",
+    "rich==13.7.1",
+    "prompt-toolkit==3.0.43",
+    "simple-term-menu==1.6.4",
+    "langchain==0.1.17",
+    "langchain-openai==0.1.6",
+    "ollama==0.1.9",
 ]
 
 [project.urls]
@@ -34,10 +36,12 @@ issues = "https://github.com/ricopinazo/comai/issues"
 comai = "comai.cli:app"
 
 [project.optional-dependencies]
-test = [
+dev = [
     "pytest",
     "hatchling",
-    "python-dotenv"
+    "types-requests==2.31.0.20240406",
+    "mypy==1.9.0",
+    "black==24.4.0",
 ]
 
 [tool.hatch.version]
