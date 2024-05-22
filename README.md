@@ -84,9 +84,6 @@ $ comai show me the process using the port 8080
 ❯ lsof -i :8080
 COMMAND   PID      USER   FD   TYPE            DEVICE SIZE/OFF NODE NAME
 node    36350 pedrorico   18u  IPv4 0xe0d28ea918e376b      0t0  TCP *:http-alt (LISTEN)
-
-$ comai kill it
-❯ kill `lsof -i :8080 | awk '{print $2}'`
 ```
 
 4. Get rid of all your docker containers:
