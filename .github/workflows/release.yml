@@ -9,10 +9,10 @@ on:
         default: "preview"
         type: choice
         options:
-          - major
-          - minor
           - fix
-          - preview
+          - minor
+          - minor,preview
+          - major,preview
           - release
 
 jobs:
