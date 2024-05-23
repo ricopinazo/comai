@@ -9,6 +9,7 @@ on:
         default: "preview"
         type: choice
         options:
+          - preview
           - fix
           - minor
           - minor,preview
